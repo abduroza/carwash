@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->string('photo')->nullable();
+            // api_token nantinya akan berisi string random yang berfungsi sebagai token dari ajax request
             $table->string('api_token')->nullable();
             $table->char('role', 1)->comment('0: superadmin, 1: admin, 2: finance, 3: operator');
             $table->uuid('outlet_id')->nullable();
