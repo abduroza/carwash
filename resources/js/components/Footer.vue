@@ -1,13 +1,14 @@
 <template>
-    <footer class="main-footer">
-        <div class="container">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 2.4.0
+    <div class="pt-4">
+        <!-- <footer class="footer sticky-bottom bg-info pb-1">
+            <div class="container">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 1.0.0
+                </div>
+                <h6>Copyright &copy; 2020 <b>Car Wash</b>.  All rights reserved.</h6>   
             </div>
-            <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-            reserved.
-        </div>
-    </footer>
+        </footer> -->
+    </div>
 </template>
 
 <script>

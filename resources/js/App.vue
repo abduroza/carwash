@@ -5,6 +5,7 @@
         <div class="content-wrapper">
             <router-view></router-view>
         </div>
+        
         <app-footer v-if="isAuth" />
     </div>
 </template>

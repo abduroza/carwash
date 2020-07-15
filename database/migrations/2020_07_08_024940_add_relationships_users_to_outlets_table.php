@@ -14,7 +14,7 @@ class AddRelationshipsUsersToOutletsTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('outlet_id')->references('id')->on('outlets');
+            $table->foreign('outlet_id')->references('id')->on('outlets')->onDelete('cascade');
         });
     }
 

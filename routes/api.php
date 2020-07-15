@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('/login', 'Auth\LoginController@login');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('/outlets', 'API\OutletController@index');
+    Route::post('/outlets', 'API\OutletController@store');
+    Route::get('/outlets/{id}/edit', 'API\OutletController@edit');
+    Route::put('/outlets/{id}', 'API\OutletController@update');
+    Route::delete('/outlets/{id}', 'API\OutletController@destroy');
 });

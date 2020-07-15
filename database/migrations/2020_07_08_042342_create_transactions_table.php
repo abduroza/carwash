@@ -22,7 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->uuid('order_id');
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
 

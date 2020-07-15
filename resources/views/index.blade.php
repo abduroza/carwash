@@ -7,12 +7,15 @@
         <title>Car WASH</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <!-- Bootstrap 3.4.1 -->
+        <!-- Bootstrap 4.5.0 -->
         <link rel="stylesheet" href="{{ asset('bootstrap-4.5.0/dist/css/bootstrap.min.css') }}">
+        {{-- custom css --}}
+        <link rel="stylesheet" href="{{ asset('mycss/style.css') }}">
         <!-- Font Awesome 4.7.0 -->
         <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
         <!-- Ionicons 2.0.1-->
         <link rel="stylesheet" href="{{ asset('ionicons/css/ionicons.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('linearicon/linearicon.min.css') }}">
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
@@ -21,7 +24,8 @@
         <script src="{{ mix('js/app.js') }}" type="text/javascript" defer></script> --}}
     </head>
     
-    <body class="hold-transition skin-blue layout-top-nav">
+        </div>
+    <body class="bg-light">
         <div id="appku">
             <app></app>
         </div>

@@ -1,5 +1,6 @@
 <!-- HTML SECTION -->
 <template>
+<div class="jumbotron text-center">
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-4">
@@ -41,6 +42,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <!-- Pada bagian HTML section hanya berisi tag html dimana terdapat dua inputan yakni email dan password dimana masing-masing form input-an tersebut memiliki v-model yang merujuk ke property data() dari Vue.js. -->
