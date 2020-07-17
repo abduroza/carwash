@@ -21,4 +21,11 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/outlets/{id}/edit', 'API\OutletController@edit');
     Route::put('/outlets/{id}', 'API\OutletController@update');
     Route::delete('/outlets/{id}', 'API\OutletController@destroy');
+    Route::get('/outlets/nopage', 'API\OutletController@indexNoPage');
+
+    Route::get('/user', 'API\UserController@index');
+    Route::post('/user', 'API\UserController@store');
+    Route::get('/user/{id}/edit', 'API\UserController@edit');
+    Route::post('/user/{id}', 'API\UserController@update')->name('user.update');
+    Route::delete('/user/{id}', 'API\UserController@destroy');
 });

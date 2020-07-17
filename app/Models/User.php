@@ -14,6 +14,15 @@ class User extends Authenticatable
 
     protected $guarded = []; //allow all field to save data
 
+    public function outlet(){
+        return $this->belongsTo(Outlet::class);
+    }
+
+    //membuat local scope. Fungsi ini untuk mengambil data dimana role = 3. Karena role 3 adalah user dengan tipe operator
+    public function scopeOperator($query){
+        return $query->where('role', 3);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

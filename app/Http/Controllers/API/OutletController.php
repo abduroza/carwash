@@ -67,4 +67,18 @@ class OutletController extends Controller
 
         return response()->json(['status' => 'success', 'data' => $outlet], 200);
     }
+
+    //get all outlet without pagination
+    public function indexNoPage()
+    {
+        $outlets = Outlet::orderBy('created_at', 'DESC');
+
+        if(request()->q != ''){
+            $outlets = $outlets->where('name', 'LIKE', '%'.request()->q.'%')
+                                ->orWhere('address', 'LIKE', '%'.request()->q.'%')
+                                ->orWhere('phone', 'LIKE', '%'.request()->q.'%'); 
+        }
+        $outlets = $outlets->get();
+        return response()->json(['status' => 'success', 'data' => $outlets], 200);
+    }
 }

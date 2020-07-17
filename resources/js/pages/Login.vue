@@ -14,19 +14,19 @@
                         <form action="">
                             <div class="form-group has-feedback" :class="{'has-error': errors.email}">
                                 <input type="email" class="form-control" placeholder="Email" v-model="data.email">
-                                <p class="text-danger" v-if="errors.email">{{ errors.email[0] }}</p>
+                                <p class="text-danger pull-left" v-if="errors.email">{{ errors.email[0] }}</p>
                             </div>
                             <div class="form-group has-feedback" :class="{'has-error': errors.password}">
                                 <input type="password" class="form-control" placeholder="Password" v-model="data.password">
-                                <p class="text-danger" v-if="errors.password">{{ errors.password[0] }}</p>
-                                <div class="pull-right">
-                                    <!-- <small><a href="#">Lupa password?</a></small> -->
-                                </div>
+                                <p class="text-danger pull-left" v-if="errors.password">{{ errors.password[0] }}</p>
+                                <!-- <div class="pull-right">
+                                    <small><a href="#">Lupa password?</a></small>
+                                </div> -->
                             </div>
                             <div class="alert alert-danger" role="alert" v-if="errors.invalid">   
                                 <small>{{ errors.invalid }}.<a href="#" class="alert-link"> Lupa password?</a></small>
                             </div>
-                            <div class="">
+                            <div class="pull-left">
                                 <input type="checkbox" id="remember" v-model="data.remember_me">
                                 <label for="remember" >Remember me</label>
                             </div>

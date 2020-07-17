@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 //IMPORT MODULE SECTION
 import auth from './store/auth.js'
 import outlet from './store/outlet.js'
+import operator from './store/operator.js'
 
 Vue.use(Vuex)
 
@@ -12,7 +13,8 @@ const store = new Vuex.Store({
     //SEMUA MODULE YANG DIBUAT AKAN DITEMPATKAN DIDALAM BAGIAN INI DAN DIPISAHKAN DENGAN KOMA UNTUK SETIAP MODULE-NYA
     modules: {
         auth,
-        outlet
+        outlet,
+        operator
     },
     //STATE HAMPIR SERUPA DENGAN PROPERTY DATA DARI COMPONENT HANYA SAJA DAPAT DIGUNAKAN SECARA GLOBAL
     state: {

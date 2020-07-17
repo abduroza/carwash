@@ -8,7 +8,7 @@
         <div>
             <!-- form yg diload dari form.vue -->
             <outlet-form></outlet-form>
-            <!-- tombol update untuk menambahkan -->
+            <!-- tombol update untuk mengupdate data terbaru -->
             <div class="form-group">
                 <button class="btn btn-primary btn-sm" @click.prevent="submit">
                     <i class="fa fa-save"></i> Update
@@ -19,7 +19,7 @@
 </template>
 <script>
 import FormOutlet from './Form.vue'
-import {mapActions, mapState} from 'vuex'
+import {mapActions} from 'vuex'
 export default {
     name: 'EditOutlet',
     created() {
@@ -30,7 +30,7 @@ export default {
     methods: {
         ...mapActions('outlet', ['editOutlet', 'updateOutlet']),
         submit(){
-            //KETIKA TOMBOL UPDATE DI MAKA AKAN MENGIRIMKAN PERMINTAAN
+            //KETIKA TOMBOL UPDATE DITEKAN MAKA AKAN MENGIRIMKAN PERMINTAAN
             //UNTUK MENGUBAH DATA BERDASARKAN CODE YANG DIKIRIMKAN
             this.updateOutlet(this.$route.params.id)
             .then(() => {

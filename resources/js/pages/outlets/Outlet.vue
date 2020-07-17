@@ -30,7 +30,8 @@
             <!-- pagination -->
             <div class="row">
                 <div class="col-md-6">
-                    <p v-if="outlets.data">
+                    <!-- v-if outlets.meta.total supaya ketika meload API yg tidak dipagination tidak ada error -->
+                    <p v-if="outlets.data && outlets.meta.total">
                         <i class="fa fa-list-ul"></i> 
                         {{ outlets.data.length }} item dari {{ outlets.meta.total }} total data
                     </p>
@@ -42,7 +43,7 @@
                         :total-rows="outlets.meta.total"
                         :per-page="outlets.meta.per_page"
                         aria-controls="outlets"
-                        v-if="outlets.data && outlets.data.length > 0"
+                        v-if="outlets.data && outlets.data.length && outlets.meta.total> 0"
                         ></b-pagination>
                     </div>
                 </div>

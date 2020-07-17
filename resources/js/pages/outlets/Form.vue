@@ -3,7 +3,7 @@
         <!-- class error untuk memberikan warna merah pada form jika ada error. error ini didapatkan dari laravel-->
         <div class="form-group" :class="{'has-error' : errors.code}"> 
             <label for="" >Kode Outlet</label>
-            <!-- kenapa readonly diberi value. saya coba tanpa value juga normal saja -->
+            <!-- readonly bernilai true jika route name yg diakses adalah operator.edit -->
             <input type="text" class="form-control" v-model="outlet.code" :readonly="$route.name == 'outlets.edit'">
             <!-- untuk menampilkan error apa yg terjadi -->
             <p class="text-danger" v-if="errors.code">{{ errors.code[0]}}</p>

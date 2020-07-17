@@ -2,7 +2,7 @@ import $axios from '../api.js'
 import { reject } from 'lodash'
 
 const state = () => ({
-    outlets: [], //UNTUK MENAMPUNG DATA OUTLETS YANG DIDAPATKAN DARI DATABASE. controller index dan edit
+    outlets: [], //UNTUK MENAMPUNG DATA OUTLETS YANG DIDAPATKAN DARI DATABASE untuk ditampilkan ke user. controller index dan edit
 
     //UNTUK MENAMPUNG VALUE DARI FORM INPUTAN NANTINYA
     //STATE INI AKAN DIGUNAKAN PADA FORM ADD OUTLET dan update. controller store dan update
@@ -121,18 +121,27 @@ const actions = {
             //DENGAN METHOD DELETE DAN ID OUTLET DI URL
             $axios.delete(`/outlets/${payload}`)
             .then((res) => {
-                //APABILA BERHASIL, FETCH DATA TERBARU DARI SERVER
-                dispatch('getOutlets')
-                .then(() => {
-                    resolve()
-                })
+                //APABILA BERHASIL, panggil getOutlets() untuk FETCH DATA TERBARU DARI SERVER
+                dispatch('getOutlets').then(() => resolve())
             })
             .catch((error) => {
                 //kirim value error ke store.js
                 commit('SET_ERRORS', error.response.data.errors, { root: true })
             })
         })
-    }
+    },
+    //melakukan request data tanpa pagination. untuk keperluan di operators/Form.vue
+    getOutletsNoPage({ commit }, payload){ //payload berisi kata kunci yg dicari
+        let search = typeof payload != 'undefined' ? payload : ''
+        return new Promise((resolve, reject) => {
+            $axios.get(`/outlets/nopage?q=${search}`)
+            .then((res) => {
+                //SIMPAN DATA KE STATE MELALUI MUTATIONS
+                commit('ASSIGN_DATA', res.data)
+                resolve(res.data)
+            })
+        })
+    },
 }
 export default{
     namespaced: true,

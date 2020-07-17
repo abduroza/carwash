@@ -9,16 +9,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav mr-auto">
                 <!-- <ul class="nav nav-tabs "> -->
-                    <li class="nav-item" >
+                    <li class="nav-item" :class="{ 'active' : $route.path == '/'}">
                         <router-link class="nav-link" to="/">Home <span class="sr-only">(current)</span></router-link>
                     </li>
+                    <!-- <li class="active">{{ $route.meta.title }}</li> -->
                     <!--  :class="{ 'active' : $route.name == 'outlets*'}" -->
-                    <li class="nav-item">
+                    <li class="nav-item" :class="{ 'active' : $route.path == '/outlets/*'}">
                         <router-link class="nav-link" :to="{ name: 'outlets.data' }">Outlets</router-link>
+                    </li>
+                    <li class="nav-item" :class="{ 'active' : $route.path == '/operator/*'}">
+                        <router-link class="nav-link" :to="{ name: 'operators.data' }">Operators</router-link>
                     </li>
                 <!-- </ul> -->
             </ul>
-
 
             <ul class="navbar-nav flex-row ml-auto d-flex">
                 <li class="nav-item dropdown ">
@@ -28,10 +31,14 @@
                         <!-- <span class="hidden-xs">{{ authenticated.name }}</span> -->
                         User
                     </a>
-                    <div class="dropdown-menu float-left" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Logout</a>
+                    <div class="dropdown-menu float-left clearfix bg-white border-primary" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Nama User</a>
+                        <!-- <span class="hidden-xs">{{ authenticated.name }}</span> -->
+                        <div class="dropdown-divider"></div>
+                        <div class="px-2">
+                            <a class="btn btn-outline-primary btn-sm float-left" href="#">Profile</a>
+                            <a class="btn btn-outline-primary btn-sm float-right" href="javascript:void(0)" @click="logout">Logout</a>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -43,6 +50,17 @@
 <script>
 import {mapState} from 'vuex'
 export default {
-
+    methods: {
+        logout() {
+            return new Promise((resolve, reject) => {
+                localStorage.removeItem('token') //MENGHAPUS TOKEN DARI LOCALSTORAGE
+                resolve()
+            }).then(()=> {
+                //Jika berhasil MEMPERBAHARUI STATE TOKEN
+                this.$store.state.token = localStorage.getItem('token') //mengakses store.js untuk mengganti  token local storage menjadi sesuai dg localstorage browser(saat logout)
+                this.$router.push('/login') //redirect ke page login
+            })
+        }
+    }
 }
 </script>

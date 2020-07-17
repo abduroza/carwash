@@ -18,28 +18,23 @@
     </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
-import FormOutlet from './Form.vue'
+import FormOperator from './Form.vue'
+import { mapActions } from 'vuex'
 export default {
-    name: 'AddOutlet',
-    data() {
-        return {
-
-        }
-    },
+    name: 'AddOperator',
     methods: {
-        ...mapActions('outlet', ['submitOutlet']),  //PANGGIL ACTIONS submitOutlet
+        ...mapActions('operator', ['submitOperator']), //PANGGIL ACTIONS submitOperator
+        //KETIKA TOMBOL submit DITEKAN MAKA FUNGSI INI AKAN DIJALANKAN
         submit(){
-            //KETIKA TOMBOL DITEKAN MAKA FUNGSI INI AKAN DIJALANKAN
-            this.submitOutlet()
+            this.submitOperator()
             .then(() => {
-                //APABILA BERHASIL MAKA AKAN DI-DIRECT KE HALAMAN /outlets
-                this.$router.push({ name: 'outlets.data'})
+                //APABILA BERHASIL MAKA AKAN DI-REDIRECT KE HALAMAN /user
+                this.$router.push({ name: 'operators.data'})
             })
         }
     },
     components: {
-        'outlet-form': FormOutlet
+        'outlet-form': FormOperator
     }
 }
 </script>

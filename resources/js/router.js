@@ -9,6 +9,11 @@ import AddOutlet from './pages/outlets/Add.vue'
 import DataOutlet from './pages/outlets/Outlet.vue'
 import EditOutlet from './pages/outlets/Edit.vue'
 
+import IndexOperator from './pages/operators/Index.vue'
+import DataOperator from './pages/operators/Operator.vue'
+import AddOperator from './pages/operators/Add.vue'
+import EditOperator from './pages/operators/Edit.vue'
+
 Vue.use(Router)
 
 //DEFINE ROUTE
@@ -28,7 +33,7 @@ const router = new Router({
         },
         {
             path: '/outlets',
-            component: IndexOutlet,
+            component: IndexOutlet, //IndexOutlet nama component di Outlet/Index.vue
             meta: { requiresAuth: true },
             children: [
                 {
@@ -48,6 +53,31 @@ const router = new Router({
                     name: 'outlets.edit',
                     component: EditOutlet,
                     meta: { title: 'Edit Outlet'}
+                }
+            ]
+        },
+        {
+            path: '/user',
+            component: IndexOperator,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '/',
+                    name: 'operators.data',
+                    component: DataOperator,
+                    meta: { title: 'Manage Operator'}
+                },
+                {
+                    path: '/add',
+                    name: 'operator.add',
+                    component: AddOperator,
+                    meta: { title: 'Add Operator'}
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'operator.edit',
+                    component: EditOperator,
+                    meta: { title: 'Edit Operator'}
                 }
             ]
         }

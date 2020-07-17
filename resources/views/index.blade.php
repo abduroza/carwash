@@ -13,8 +13,6 @@
         <link rel="stylesheet" href="{{ asset('mycss/style.css') }}">
         <!-- Font Awesome 4.7.0 -->
         <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
-        <!-- Ionicons 2.0.1-->
-        <link rel="stylesheet" href="{{ asset('ionicons/css/ionicons.min.css') }}">
         <link rel="stylesheet" href="{{ asset('linearicon/linearicon.min.css') }}">
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -23,8 +21,6 @@
         {{-- <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
         <script src="{{ mix('js/app.js') }}" type="text/javascript" defer></script> --}}
     </head>
-    
-        </div>
     <body class="bg-light">
         <div id="appku">
             <app></app>
