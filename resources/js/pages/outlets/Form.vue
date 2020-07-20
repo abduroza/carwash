@@ -1,26 +1,26 @@
 <template>
     <div>
         <!-- class error untuk memberikan warna merah pada form jika ada error. error ini didapatkan dari laravel-->
-        <div class="form-group" :class="{'has-error' : errors.code}"> 
+        <div class="form-group"> 
             <label for="" >Kode Outlet</label>
             <!-- readonly bernilai true jika route name yg diakses adalah operator.edit -->
-            <input type="text" class="form-control" v-model="outlet.code" :readonly="$route.name == 'outlets.edit'">
+            <input type="text" class="form-control" v-model="outlet.code" :readonly="$route.name == 'outlets.edit'" :class="{'is-invalid' : errors.code}">
             <!-- untuk menampilkan error apa yg terjadi -->
             <p class="text-danger" v-if="errors.code">{{ errors.code[0]}}</p>
         </div>
-        <div class="form-group" :class="{'has-error' : errors.name}"> 
+        <div class="form-group"> 
             <label for="" >Nama Outlet</label>
-            <input type="text" class="form-control" v-model="outlet.name">
+            <input type="text" class="form-control" v-model="outlet.name"  :class="{'is-invalid' : errors.name}">
             <p class="text-danger" v-if="errors.name">{{ errors.name[0]}}</p>
         </div>
-        <div class="form-group" :class="{'has-error' : errors.address}"> 
+        <div class="form-group"> 
             <label for="" >Alamat</label>
-            <textarea cols="5" rows="4" class="form-control" v-model="outlet.address"></textarea>
+            <textarea cols="5" rows="4" class="form-control" v-model="outlet.address" :class="{'is-invalid' : errors.address}"></textarea>
             <p class="text-danger" v-if="errors.address">{{ errors.address[0]}}</p>
         </div>
-        <div class="form-group" :class="{'has-error' : errors.phone}"> 
+        <div class="form-group"> 
             <label for="" >No. Telp</label>
-            <input type="number" class="form-control" v-model="outlet.phone">
+            <input type="number" class="form-control" v-model="outlet.phone" :class="{'is-invalid' : errors.phone}">
             <p class="text-danger" v-if="errors.phone">{{ errors.phone[0]}}</p>
         </div>
         <div class="form-group">
@@ -36,7 +36,7 @@ export default {
     computed: {
         ...mapState(['errors']), //mengambil state error dari 
         ...mapState('outlet', {
-            outlet: state => state.outlet //MENGAMBIL STATE OUTLET dari outlet.js
+            outlet: state => state.outlet //MENGAMBIL dan mengisi STATE OUTLET dari outlet.js
         }),
     },
     methods: {

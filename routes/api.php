@@ -28,4 +28,13 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/user/{id}/edit', 'API\UserController@edit');
     Route::post('/user/{id}', 'API\UserController@update')->name('user.update');
     Route::delete('/user/{id}', 'API\UserController@destroy');
+
+    Route::get('/product', 'API\ProductController@index');
+    Route::post('/product', 'API\ProductController@store');
+    Route::get('/product/{id}/edit', 'API\ProductController@edit');
+    Route::put('/product/{id}', 'API\ProductController@update');
+    Route::delete('/product/{id}', 'API\ProductController@destroy');
+
+    Route::get('/type-product', 'API\TypeController@index');
+    Route::post('/type-product', 'API\TypeController@store');
 });

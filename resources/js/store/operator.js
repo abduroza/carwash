@@ -2,7 +2,7 @@ import $axios from '../api.js'
 import { reject } from 'lodash'
 
 const state = () => ({
-    operators: [], //UNTUK MENAMPUNG DATA OUTLETS YANG DIDAPATKAN DARI DATABASE. controller index dan edit
+    operators: [], //UNTUK MENAMPUNG DATA OUTLETS YANG DIDAPATKAN DARI DATABASE. controller index
 
     //UNTUK MENAMPUNG VALUE DARI FORM INPUTAN NANTINYA
     //STATE INI AKAN DIGUNAKAN PADA FORM ADD OUTLET dan update. controller store dan update
@@ -18,7 +18,7 @@ const state = () => ({
 })
 
 const mutations = {
-    //MEMASUKKAN DATA KE STATE operators untuk ditampilkan (index dan edit)
+    //MEMASUKKAN DATA KE STATE operators untuk ditampilkan (index)
     ASSIGN_DATA(state, payload){
         state.operators = payload
     },
@@ -28,7 +28,7 @@ const mutations = {
         state.page = payload
     },
 
-    //MENGUBAH DATA STATE OUTLET untuk disimpan (update) yg datanya dari edit
+    //MENGUBAH DATA STATE operator untuk disimpan (update) yg datanya dari edit
     ASSIGN_FORM(state, payload){
         state.operator = {
             name: payload.name,

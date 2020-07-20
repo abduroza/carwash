@@ -14,6 +14,11 @@ import DataOperator from './pages/operators/Operator.vue'
 import AddOperator from './pages/operators/Add.vue'
 import EditOperator from './pages/operators/Edit.vue'
 
+import IndexProduct from './pages/products/Index.vue'
+import DataProduct from './pages/products/Product.vue'
+import AddProduct from './pages/products/Add.vue'
+import EditProduct from './pages/products/Edit.vue'
+
 Vue.use(Router)
 
 //DEFINE ROUTE
@@ -43,13 +48,13 @@ const router = new Router({
                     meta: { title: 'Manage Outlets'}
                 },
                 {
-                    path: '/add',
+                    path: 'add',
                     name: 'outlets.add',
                     component: AddOutlet,
                     meta: { title: 'Add New Outlet'}
                 },
                 {
-                    path: '/edit/:id',
+                    path: 'edit/:id',
                     name: 'outlets.edit',
                     component: EditOutlet,
                     meta: { title: 'Edit Outlet'}
@@ -62,13 +67,13 @@ const router = new Router({
             meta: { requiresAuth: true },
             children: [
                 {
-                    path: '/',
+                    path: '',
                     name: 'operators.data',
                     component: DataOperator,
                     meta: { title: 'Manage Operator'}
                 },
                 {
-                    path: '/add',
+                    path: 'add',
                     name: 'operator.add',
                     component: AddOperator,
                     meta: { title: 'Add Operator'}
@@ -78,6 +83,31 @@ const router = new Router({
                     name: 'operator.edit',
                     component: EditOperator,
                     meta: { title: 'Edit Operator'}
+                }
+            ]
+        },
+        {
+            path: '/product',
+            component: IndexProduct,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'products.data',
+                    component: DataProduct,
+                    meta: { title: 'Manage Product'},
+                },
+                {
+                    path: 'add',
+                    name: 'product.add',
+                    component: AddProduct,
+                    meta: { title: 'Add Product'}
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'product.edit',
+                    component: EditProduct,
+                    meta: { title: 'Edit Product'}
                 }
             ]
         }

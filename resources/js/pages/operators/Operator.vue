@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class="d-flex mb-3 mt-1">
             <div class="p-2 flex-grow-1">
-                <router-link :to="{ name: 'operator.add' }" class="btn btn-primary btn-sm btn-flat">Tambah</router-link>
+                <router-link :to="{ name: 'operator.add' }" class="btn btn-primary btn-sm">Tambah</router-link>
             </div>
             <div class="p-2">
                 <input type="text" class="form-control" placeholder="Cari..." v-model="search">
@@ -18,9 +18,6 @@
                 <template v-slot:cell(photo)="row">
                     <div v-if="row.item.photo">
                         <img :src="'/storage/users/' + row.item.photo" :width="50" :height="50" :alt="row.item.name">
-                    </div>
-                    <div v-else>
-                        <img :src="'/storage/users/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.item.name">
                     </div>
                 </template>
                 <template v-slot:cell(outlet_id)="row">
@@ -108,7 +105,7 @@ export default {
         }
     },
     methods: {
-        //MENGAMBIL FUNGSI DARI VUEX MODULE outlet. ini sebagai ganti this.$store.dispatch
+        //MENGAMBIL FUNGSI DARI VUEX MODULE operator. ini sebagai ganti this.$store.dispatch
         ...mapActions('operator', ['getOperators', 'removeOperator']),
 
         //KETIKA TOMBOL HAPUS DICLICK, MAKA AKAN MENJALANKAN METHOD INI
@@ -127,7 +124,7 @@ export default {
                 //JIKA DISETUJUI. akan ada value: true. jika di CANCEL akan menghasilkan dismiss: "cancel
                 if(result.value){
                     //MAKA FUNGSI removeOutlet AKAN DIJALANKAN
-                    // this.$store.dispatch('outlet/removeOperator', id) //jika tidak pakai helper mapActions, pakainya ini. dispatch berarti mengakses ke action
+                    //this.$store.dispatch('outlet/removeOperator', id) //jika tidak pakai helper mapActions, pakainya ini. dispatch berarti mengakses ke action
                     this.removeOperator(id)
                 }
             })

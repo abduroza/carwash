@@ -2,12 +2,12 @@
     <div class="col-12">
         <div class="d-flex mb-3 mt-1">
             <div class="p-2 flex-grow-1">
-                <h5>Add New Operator</h5>
+                <h5>Add New Product</h5>
             </div>
         </div>
         <div>
             <!-- form yg diload dari form.vue -->
-            <operator-form></operator-form>
+            <product-form></product-form>
             <!-- tombol add untuk menambahkan -->
             <div class="form-group">
                 <button class="btn btn-primary btn-sm" @click.prevent="submit">
@@ -18,23 +18,22 @@
     </div>
 </template>
 <script>
-import FormOperator from './Form.vue'
 import { mapActions } from 'vuex'
+import FormProduct from './Form.vue'
 export default {
-    name: 'AddOperator',
+    name: 'AddProduct',
     methods: {
-        ...mapActions('operator', ['submitOperator']), //PANGGIL ACTIONS submitOperator
-        //KETIKA TOMBOL submit DITEKAN MAKA FUNGSI INI AKAN DIJALANKAN
+        ...mapActions('product', ['submitProduct']), //panggil submitProduct di product.js
         submit(){
-            this.submitOperator()
+            this.submitProduct()
             .then(() => {
-                //APABILA BERHASIL MAKA AKAN DI-REDIRECT KE HALAMAN /user
-                this.$router.push({ name: 'operators.data'})
+                //jika berhasil redirect ke list product
+                this.$router.push({ name: 'products.data'})
             })
         }
     },
     components: {
-        'operator-form': FormOperator
+        'product-form': FormProduct
     }
 }
 </script>

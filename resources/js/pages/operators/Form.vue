@@ -1,21 +1,20 @@
 <template>
     <div>
         <!-- class error untuk memberikan warna merah pada form jika ada error. error ini didapatkan dari laravel-->
-        <div class="form-group" :class="{'has-error' : errors.name}"> 
+        <div class="form-group"> 
             <label for="" >Nama User</label>
-            <!-- readonly bernilai true jika route name yg diakses adalah operator.edit -->
-            <input type="text" class="form-control" v-model="operator.name">
+            <input type="text" class="form-control" v-model="operator.name" :class="{'is-invalid' : errors.name}">
             <!-- untuk menampilkan error apa yg terjadi -->
             <p class="text-danger" v-if="errors.name">{{ errors.name[0]}}</p>
         </div>
-        <div class="form-group" :class="{'has-error' : errors.email}"> 
+        <div class="form-group"> 
             <label for="" >Email</label>
-            <input type="email" class="form-control" v-model="operator.email">
+            <input type="email" class="form-control" v-model="operator.email" :class="{'is-invalid' : errors.email}">
             <p class="text-danger" v-if="errors.email">{{ errors.email[0]}}</p>
         </div>
-        <div class="form-group" :class="{'has-error' : errors.password}"> 
+        <div class="form-group"> 
             <label for="" >Password</label>
-            <input type="password" class="form-control" v-model="operator.password">
+            <input type="password" class="form-control" v-model="operator.password"  :class="{'is-invalid' : errors.password}">
             <small class="text-warning" v-if="$route.name == 'operator.edit'">Leave blank if you don't want to change password</small>
             <p class="text-danger" v-if="errors.password">{{ errors.password[0]}}</p>
         </div>
@@ -34,18 +33,18 @@
             </div>
             <p class="text-danger" v-if="errors.role">{{ errors.role[0]}}</p>
         </div> -->
-        <div class="form-group" :class="{ 'has-error': errors.outlet_id }">
+        <div class="form-group">
             <label for="">Outlet</label>
-            <select name="outlet_id" class="form-control" v-model="operator.outlet_id">
+            <select name="outlet_id" class="form-control" v-model="operator.outlet_id" :class="{ 'is-invalid': errors.outlet_id }">
                 <option value="">Pilih</option>
                 <option v-for="(row, index) in outlets.data" :value="row.id" :key="index">{{ row.name }}</option>
             </select>
             <p class="text-danger" v-if="errors.outlet_id">{{ errors.outlet_id[0] }}</p>
         </div>
-        <div class="form-group" :class="{ 'has-error': errors.photo }">
+        <div class="form-group">
             <label for="">Foto</label>
             <!-- "uploadImage($event)" mengambil data dari fungsi di methods -->
-            <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input">
+            <input type="file" class="form-control" accept="image/*" @change="uploadImage($event)" id="file-input"  :class="{ 'is-invalid': errors.photo }">
             <!-- 'operator.edit' mengambil dari router.js -->
             <small class="text-warning" v-if="$route.name == 'operator.edit'" >Leave blank if you don't want to change photo</small>
             <p class="text-danger" v-if="errors.photo">{{ errors.photo[0] }}</p>
@@ -63,7 +62,7 @@ export default {
     computed: {
         ...mapState(['errors']), //mengambil mapstate error dari
         ...mapState('operator', {
-            operator: state => state.operator, //mengambil state operator dari operator.js
+            operator: state => state.operator, //mengambil dan mengisi state operator di operator.js
         }),
         ...mapState('outlet', {
             outlets: state => state.outlets //mengambil state outlets dari outlets.js

@@ -14,11 +14,14 @@
                     </li>
                     <!-- <li class="active">{{ $route.meta.title }}</li> -->
                     <!--  :class="{ 'active' : $route.name == 'outlets*'}" -->
-                    <li class="nav-item" :class="{ 'active' : $route.path == '/outlets/*'}">
+                    <li class="nav-item" :class="{ 'active' : $route.path == '/outlets/'}">
                         <router-link class="nav-link" :to="{ name: 'outlets.data' }">Outlets</router-link>
                     </li>
-                    <li class="nav-item" :class="{ 'active' : $route.path == '/operator/*'}">
+                    <li class="nav-item" :class="{ 'active' : $route.path == '/user/'}">
                         <router-link class="nav-link" :to="{ name: 'operators.data' }">Operators</router-link>
+                    </li>
+                    <li class="nav-item" :class="{ 'active' : $route.path == '/product/'}">
+                        <router-link class="nav-link" :to="{ name: 'products.data' }">Products</router-link>
                     </li>
                 <!-- </ul> -->
             </ul>

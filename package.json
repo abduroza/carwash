@@ -25,6 +25,7 @@
         "bootstrap-vue": "^2.15.0",
         "portal-vue": "^2.1.7",
         "vue": "^2.6.11",
+        "vue-currency-filter": "^5.1.0",
         "vue-router": "^3.3.4",
         "vue-sweetalert2": "^3.0.6",
         "vuex": "^3.5.1"

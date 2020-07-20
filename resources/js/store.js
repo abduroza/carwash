@@ -5,6 +5,8 @@ import Vuex from 'vuex'
 import auth from './store/auth.js'
 import outlet from './store/outlet.js'
 import operator from './store/operator.js'
+import product from './store/product.js'
+import type from './store/type.js'
 
 Vue.use(Vuex)
 
@@ -14,7 +16,9 @@ const store = new Vuex.Store({
     modules: {
         auth,
         outlet,
-        operator
+        operator,
+        product,
+        type
     },
     //STATE HAMPIR SERUPA DENGAN PROPERTY DATA DARI COMPONENT HANYA SAJA DAPAT DIGUNAKAN SECARA GLOBAL
     state: {
@@ -29,8 +33,7 @@ const store = new Vuex.Store({
             return state.token != 'null' && state.token != null
         }
     },
-    mutations: {
-         //SEBUAH MUTATIONS YANG BERFUNGSI UNTUK MEMANIPULASI VALUE DARI STATE token
+    mutations: { //MEMANIPULASI VALUE DARI STATE
         SET_TOKEN(state, payload){
             state.token = payload
         },
