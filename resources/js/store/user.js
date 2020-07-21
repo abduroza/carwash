@@ -2,11 +2,9 @@ import $axios from '../api.js'
 import { reject } from 'lodash'
 
 const state = () => ({
-    operators: [], //UNTUK MENAMPUNG DATA OUTLETS YANG DIDAPATKAN DARI DATABASE. controller index
-
-    //UNTUK MENAMPUNG VALUE DARI FORM INPUTAN NANTINYA
-    //STATE INI AKAN DIGUNAKAN PADA FORM ADD OUTLET dan update. controller store dan update
-    operator: {
+    authenticated: [], //menampung user yg sedang login
+    users: [], //menampumg list user
+    user: {
         name: '',
         email: '',
         password: '',
@@ -18,9 +16,14 @@ const state = () => ({
 })
 
 const mutations = {
-    //MEMASUKKAN DATA KE STATE operators untuk ditampilkan (index)
+    //assign user yg sedang login
+    ASSIGN_USER_AUTH(state, payload){
+        state.authenticated = payload
+    },
+
+    //assign semua user yg ada kecuali user untuk ditampilkan index
     ASSIGN_DATA(state, payload){
-        state.operators = payload
+        state.users = payload
     },
 
     //MENGUBAH DATA STATE PAGE
@@ -28,9 +31,9 @@ const mutations = {
         state.page = payload
     },
 
-    //MENGUBAH DATA STATE operator untuk disimpan (update) yg datanya dari edit
+    //mengubah state user untuk keperluan update yg datanya dari edit
     ASSIGN_FORM(state, payload){
-        state.operator = {
+        state.user = {
             name: payload.name,
             email: payload.email,
             password: '',
@@ -40,9 +43,9 @@ const mutations = {
         }
     },
 
-    //ME-RESET STATE OPERATOR MENJADI KOSONG
+    //ME-RESET STATE USER MENJADI KOSONG
     CLEAR_FORM(state, payload){
-        state.operator = {
+        state.user = {
             name: '',
             email: '',
             password: '',
@@ -54,30 +57,33 @@ const mutations = {
 }
 
 const actions = {
-    //FUNGSI INI UNTUK MELAKUKAN REQUEST DATA OUTLET DARI SERVER
-    getOperators({ commit, state }, payload){ //payload berisi kata kunci yg dicari
-        //MENGECEK PAYLOAD ADA ATAU TIDAK
+    getUserLogin({ commit }){
+        return new Promise((resolve, reject) => {
+            $axios.get(`/user-authenticated`)
+            .then((res) => {
+                commit('ASSIGN_USER_AUTH', res.data.data)
+                resolve(res.data)
+            })
+        })
+    },
+    getUsers({ commit, state }, payload){ //ini belum dipakai
         let search = typeof payload != 'undefined' ? payload : ''
         return new Promise((resolve, reject) => {
-            //REQUEST DATA DENGAN ENDPOINT /OUTLETS
-            $axios.get(`/operators?page=${state.page}&q=${search}`)
+            $axios.get(`/user-lists?page=${state.page}&q=${search}`)
             .then((res) => {
-                //SIMPAN DATA KE STATE MELALUI MUTATIONS
                 commit('ASSIGN_DATA', res.data)
                 resolve(res.data)
             })
         })
     },
-    //FUNGSI UNTUK MENAMBAHKAN DATA BARU
-    submitOperator({commit, dispatch, state}){
-
+    submitUser({ commit, dispatch, state }){
         let form = new FormData() //DIMANA UNTUK MENGUPLOAD GAMBAR HARUS MENGGUNAKAN FORMDATA
-        form.append('name', state.operator.name)
-        form.append('email', state.operator.email)
-        form.append('password', state.operator.password)
-        form.append('role', state.operator.role)
-        form.append('outlet_id', state.operator.outlet_id)
-        form.append('photo', state.operator.photo)
+        form.append('name', state.user.name)
+        form.append('email', state.user.email)
+        form.append('password', state.user.password)
+        form.append('role', state.user.role)
+        form.append('outlet_id', state.user.outlet_id)
+        form.append('photo', state.user.photo)
 
         return new Promise((resolve, reject) => {
             $axios.post(`/user`, form, {
@@ -87,7 +93,7 @@ const actions = {
                 }
             })
             .then((res) => {
-                dispatch('getOperators').then(() => resolve(res.data))
+                dispatch('getUsers').then(() => resolve(res.data))
             })
             .catch((err) => {
                 //APABILA TERJADI ERROR VALIDASI
@@ -99,8 +105,8 @@ const actions = {
             })
         })
     },
-    //UNTUK MENGAMBIL SINGLE DATA DARI SERVER BERDASARKAN CODE opeartor/user
-    editOperator({ commit }, payload){
+    //UNTUK MENGAMBIL SINGLE DATA DARI SERVER BERDASARKAN CODE user
+    editUser({ commit }, payload){
         return new Promise((resolve, reject) => {
             $axios.get(`/user/${payload}/edit`)
             .then((res) => {
@@ -111,18 +117,18 @@ const actions = {
         })
     },
     //UNTUK MENGUPDATE DATA BERDASARKAN CODE YANG SEDANG DIEDIT
-    updateOperator({ commit, state }, payload){
+    updateUser({ commit, state }, payload){
 
         let form = new FormData() //UNTUK MENGUPLOAD GAMBAR HARUS MENGGUNAKAN FORMDATA
-        form.append('name', state.operator.name)
-        form.append('email', state.operator.email)
-        form.append('password', state.operator.password)
-        form.append('role', state.operator.role)
-        form.append('outlet_id', state.operator.outlet_id)
-        form.append('photo', state.operator.photo)
+        form.append('name', state.user.name)
+        form.append('email', state.user.email)
+        form.append('password', state.user.password)
+        form.append('role', state.user.role)
+        form.append('outlet_id', state.user.outlet_id)
+        form.append('photo', state.user.photo)
 
         return new Promise((resolve, reject) => {
-            $axios.post(`/operator/${payload}`, form, {
+            $axios.post(`/user/${payload}`, form, {
                 //KARENA TERDAPAT FILE FOTO, MAKA HEADERNYA DITAMBAHKAN multipart/form-data
                 headers: {
                     'Content-Type' : 'multipart/form-data'
@@ -138,14 +144,14 @@ const actions = {
         })
     },
     //MENGHAPUS DATA
-    removeOperator({ dispatch }, payload){
+    removeUser({ dispatch }, payload){
         return new Promise((resolve, reject) => {
             //MENGIRIM PERMINTAAN KE SERVER UNTUK MENGHAPUS DATA
             //DENGAN METHOD DELETE DAN ID OUTLET DI URL
             $axios.delete(`/user/${payload}`)
             .then((res) => {
-                //APABILA BERHASIL, panggil getOperator untuk FETCH DATA TERBARU DARI SERVER
-                dispatch('getOperators').then(() => resolve())
+                //APABILA BERHASIL, panggil getUsers untuk FETCH DATA TERBARU DARI SERVER
+                dispatch('getUsers').then(() => resolve())
             })
             .catch((err) => {
                 //kirim value error ke store.js
@@ -154,7 +160,8 @@ const actions = {
         })
     }
 }
-export default {
+
+export default{
     namespaced: true,
     state,
     mutations,

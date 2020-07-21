@@ -20,6 +20,7 @@ Vue.use(VueCurrencyFilter,
     })
 
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { mapGetters, mapActions } from 'vuex'
 
 new Vue({
     el: '#appku',
@@ -27,5 +28,17 @@ new Vue({
     store,
     components: {
         App
+    },
+    computed: {
+        ...mapGetters(['isAuth']),
+    },
+    methods: {
+        ...mapActions('user', ['getUserLogin'])
+    },
+    created(){ //ketika file ini dibuka langsung mengecek user login atau enggak
+        if(this.isAuth){ 
+            //jika user login, maka ambil data user yg sedang login
+            this.getUserLogin()
+        }
     }
 })

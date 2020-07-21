@@ -84,7 +84,6 @@ class UserController extends Controller
             $operator = User::find($id); //ambil data operator yg diupdate
 
             $photo_name = $operator->photo;
-            // return response($photo_name); //->json(['data' => $photo_name]);
             //jika password tidak kosong, maka request password baru. jika kosong, pakai password lama
             $password = $request->password != null ? bcrypt($request->password) : $operator->password;
 
@@ -122,4 +121,67 @@ class UserController extends Controller
 
         return response()->json(['status' => 'success']);
     }
+
+    //menampilkan user yg sedang login
+    public function getUserLogin()
+    {
+        $user = request()->user();
+        return response()->json(['status' => 'success', 'data' => $user]);
+    }
+
+    //get all user except operator
+    public function userLists()
+    {
+        $users = User::with(['outlet'])->orderBy('created_at', 'DESC')->where('role', '!=', 3);
+        if(request()->q != ''){
+            $users = $users->where('name', 'LIKE', '%'.request()->q.'%');
+        }
+
+        $users = $users->paginate(5);
+
+        return new UserCollection($users);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:150',
+            'email' => 'required|email',
+            'password' => 'nullable|string|min:5',
+            'photo' => 'nullable',
+            'outlet_id' => 'nullable',
+            'role' => 'required'
+        ]);
+
+        try {
+            $user = User::find($id); //ambil data user yg diupdate
+
+            $photo_name = $user->photo;
+            //jika password tidak kosong, maka request password baru. jika kosong, pakai password lama
+            $password = $request->password != null ? bcrypt($request->password) : $user->password;
+
+            if($request->hasFile('photo')){
+                $file = $request->file('photo'); //mengambil foto
+                $photo_name ? File::delete(storage_path('app/public/users/' . $photo_name)) : ''; //hapus foto lama jika punya
+                $photo_name = $request->email . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/users', $photo_name); //memindahkan foto ke folder public/users
+            }
+            
+            //update data di database
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = $password;
+            $user->photo = $photo_name;
+            $user->outlet_id = $request->outlet_id;
+            $user->role = $request->role;
+            $user->save();
+
+            return response()->json(['status' => 'success'], 200);
+        } catch (\Exception $err) {
+            //jika errornya disini, FE nya masih belum bisa menangkap error terjadi di bagian apa. di FE baru bisa menangani error validasi
+            return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);
+        }
+    }
+
+
 }

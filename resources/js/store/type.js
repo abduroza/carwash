@@ -15,7 +15,7 @@ const mutations = {
     },
     CLEAR_FORM_TYPE(state, payload){
         state.type = {
-            name: ''
+            name_type: ''
         }
     },
 }

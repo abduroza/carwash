@@ -22,9 +22,9 @@
                 <!-- cell(actions). actions sesuai key  -->
                 <template v-slot:cell(actions)="row">
                     <!-- utk edit pakai a href sesuai link dari router yg diberikan -->
-                    <router-link :to="{ name: 'outlets.edit', params: {id: row.item.id} }" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i></router-link>
+                    <router-link :to="{ name: 'outlets.edit', params: {id: row.item.id} }" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Edit outlet"><i class="fa fa-pencil"></i></router-link>
                     <!-- utk hapus pakai button -->
-                    <button class="btn btn-danger btn-sm" @click="deleteOutlet(row.item.id)"><i class="fa fa-trash"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="deleteOutlet(row.item.id)" data-toggle="tooltip" data-placement="top" title="Hapus outlet"><i class="fa fa-trash"></i></button>
                 </template>
             </b-table>
             <!-- pagination -->

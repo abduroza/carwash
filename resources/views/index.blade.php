@@ -17,9 +17,6 @@
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-
-        {{-- <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
-        <script src="{{ mix('js/app.js') }}" type="text/javascript" defer></script> --}}
     </head>
     <body class="bg-light">
         <div id="appku">
@@ -30,12 +27,8 @@
         <script src="{{ asset('jquery/jquery-3.5.1.min.js') }}"></script>
         <!-- Bootstrap  -->
         <script src="{{ asset('bootstrap-4.5.0/dist/js/bootstrap.min.js') }}"></script>
-        <!-- SlimScroll -->
-        {{-- <script src="{{ asset('bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script> --}}
-        <!-- FastClick -->
-        {{-- <script src="{{ asset('bower_components/fastclick/lib/fastclick.js') }}"></script> --}}
 
         <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
-<!-- Perhatikan tag <app></app>, dimana tag tersebut merupakan custom tag yang dibuat dari component Vue.js dan pastikan tag div yang mengapitnya memiliki id appku. Adapun tag lainnya hanya me-load file js dan css. -->
+<!-- tag <app></app>, dimana tag tersebut merupakan custom tag yang dibuat dari component Vue.js dan pastikan tag div yang mengapitnya memiliki id appku. Adapun tag lainnya hanya me-load file js dan css. -->

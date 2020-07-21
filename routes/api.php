@@ -23,11 +23,14 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::delete('/outlets/{id}', 'API\OutletController@destroy');
     Route::get('/outlets/nopage', 'API\OutletController@indexNoPage');
 
-    Route::get('/user', 'API\UserController@index');
+    Route::get('/operators', 'API\UserController@index'); //khusus operator
     Route::post('/user', 'API\UserController@store');
     Route::get('/user/{id}/edit', 'API\UserController@edit');
-    Route::post('/user/{id}', 'API\UserController@update')->name('user.update');
+    Route::post('/operator/{id}', 'API\UserController@update')->name('operator.update'); //khusus operator
     Route::delete('/user/{id}', 'API\UserController@destroy');
+    Route::get('/user-lists', 'API\UserController@userLists')->name('user.index');
+    Route::get('/user-authenticated', 'API\UserController@getUserLogin')->name('user.authenticated');
+    Route::post('/user/{id}', 'API\UserController@updateUser')->name('user.update'); //selain operator
 
     Route::get('/product', 'API\ProductController@index');
     Route::post('/product', 'API\ProductController@store');

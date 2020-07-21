@@ -14,6 +14,11 @@ import DataOperator from './pages/operators/Operator.vue'
 import AddOperator from './pages/operators/Add.vue'
 import EditOperator from './pages/operators/Edit.vue'
 
+import IndexUser from './pages/users/Index.vue'
+import DataUser from './pages/users/User.vue'
+import AddUser from './pages/users/Add.vue'
+import EditUser from './pages/users/Edit.vue'
+
 import IndexProduct from './pages/products/Index.vue'
 import DataProduct from './pages/products/Product.vue'
 import AddProduct from './pages/products/Add.vue'
@@ -62,7 +67,7 @@ const router = new Router({
             ]
         },
         {
-            path: '/user',
+            path: '/operator',
             component: IndexOperator,
             meta: { requiresAuth: true },
             children: [
@@ -83,6 +88,31 @@ const router = new Router({
                     name: 'operator.edit',
                     component: EditOperator,
                     meta: { title: 'Edit Operator'}
+                }
+            ]
+        },
+        {
+            path: '/user',
+            component: IndexUser,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'users.data',
+                    component: DataUser,
+                    meta: { title: 'Manage User'}
+                },
+                {
+                    path: 'add',
+                    name: 'user.add',
+                    component: AddUser,
+                    meta: { title: 'Add User'}
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'user.edit',
+                    component: EditUser,
+                    meta: { title: 'Edit User'}
                 }
             ]
         },

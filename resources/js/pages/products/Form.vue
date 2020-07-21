@@ -23,14 +23,13 @@
                     <p class="text-danger" v-if="errors.type_id">{{ errors.type_id[0] }}</p>
                 </div>
             </div>
-          	<!-- MAKA FORM UNTUK MENAMBAHKAN JENIS LAUNDRY AKAN DITAMPILKAN -->
+          	<!-- MAKA FORM UNTUK MENAMBAHKAN JENIS PRODUCT AKAN DITAMPILKAN -->
             <div class="col-md-6" v-if="showFormType">
                 <div class="form-group">
                     <label for="">&nbsp;</label>
                     <div class="input-group">
                         <input type="text" placeholder="Mobil, Motor, Truk..." v-model="type.name_type" class="form-control" :class="{ 'is-invalid': errors.name_type }">
                         <div class="input-group-append">
-                            <!-- <button class="btn btn-outline-secondary" type="button">Button</button> -->
                             <a  href="javascript:void(0)" class="btn btn-outline-primary" id="basic-addon2" @click="addNewType">Save</a>
                         </div>
                         
@@ -38,7 +37,7 @@
                     <p class="text-danger" v-if="errors.name_type">{{ errors.name_type[0] }}</p>
                 </div>
             </div>
-          	<!-- END FORM ADD JENIS LAUNDRY -->
+          	<!-- END FORM ADD JENIS PRODUCT -->
         </div>
         <div class="form-group">
             <label for="">Size</label>

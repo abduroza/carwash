@@ -12,12 +12,12 @@
                     </div>
                     <div class="card-body ">
                         <form action="">
-                            <div class="form-group has-feedback" :class="{'has-error': errors.email}">
-                                <input type="email" class="form-control" placeholder="Email" v-model="data.email">
+                            <div class="form-group has-feedback">
+                                <input type="email" class="form-control" placeholder="Email" v-model="data.email"  :class="{'is-invalid': errors.email}">
                                 <p class="text-danger pull-left" v-if="errors.email">{{ errors.email[0] }}</p>
                             </div>
-                            <div class="form-group has-feedback" :class="{'has-error': errors.password}">
-                                <input type="password" class="form-control" placeholder="Password" v-model="data.password">
+                            <div class="form-group has-feedback">
+                                <input type="password" class="form-control" placeholder="Password" v-model="data.password"  :class="{'is-invalid': errors.password}">
                                 <p class="text-danger pull-left" v-if="errors.password">{{ errors.password[0] }}</p>
                                 <!-- <div class="pull-right">
                                     <small><a href="#">Lupa password?</a></small>
@@ -65,7 +65,7 @@ export default {
         //KITA MELAKUKAN PENGECEKAN JIKA SUDAH LOGIN DIMANA VALUE isAuth BERNILAI TRUE
         if (this.isAuth) {
             //MAKA DI-DIRECT KE ROUTE DENGAN NAME home
-            this.$router.push({ name: 'home' })
+            this.$router.reload({ name: 'home' })
         }
     },
     computed: {

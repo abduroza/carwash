@@ -29,7 +29,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'price' => 'required|integer',
             'type_id' => 'required|exists:types,id',
             'size' => 'required',
@@ -68,7 +68,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'price' => 'required|integer',
             'type_id' => 'required|exists:types,id',
             'size' => 'required',

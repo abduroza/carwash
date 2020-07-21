@@ -37,7 +37,18 @@
     </div>
 </template>
 <script>
-    export default {
-        
+export default {
+    mounted(){
+        //setelah login, user diarahkan ke home. jika halaman tidak direload, maka kondisinya masih seperti sebelum logout. sehingga perlu direload 1 kali.
+        if (localStorage.getItem('reloaded')) {
+            // The page was just reloaded. Clear the value from local storage
+            // so that it will reload the next time this page is visited.
+            localStorage.removeItem('reloaded');
+        } else {
+            // Set a flag so that we know not to reload the page twice.
+            localStorage.setItem('reloaded', '1');
+            location.reload();
+        }
     }
+}
 </script>
