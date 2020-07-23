@@ -28,7 +28,7 @@
                     <input type="radio" v-model="user.role" value="2"> Finance
                 </label>
                 <label class="btn btn-outline-secondary btn-sm">
-                    <input type="radio" v-model="user.role" value="3"> User
+                    <input type="radio" v-model="user.role" value="3"> Operator
                 </label>
             </div>
             <p class="text-danger" v-if="errors.role">{{ errors.role[0]}}</p>

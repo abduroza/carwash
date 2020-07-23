@@ -24,6 +24,12 @@ import DataProduct from './pages/products/Product.vue'
 import AddProduct from './pages/products/Add.vue'
 import EditProduct from './pages/products/Edit.vue'
 
+import IndexExpense from './pages/expenses/Index.vue'
+import DataExpense from './pages/expenses/Expense.vue'
+import AddExpense from './pages/expenses/Add.vue'
+import EditExpense from './pages/expenses/Edit.vue'
+import ViewExpense from './pages/expenses/View.vue'
+
 Vue.use(Router)
 
 //DEFINE ROUTE
@@ -138,6 +144,37 @@ const router = new Router({
                     name: 'product.edit',
                     component: EditProduct,
                     meta: { title: 'Edit Product'}
+                }
+            ]
+        },
+        {
+            path: '/expense',
+            component: IndexExpense,
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'expenses.data',
+                    component: DataExpense,
+                    meta: { title: 'Manage Expense'}
+                },
+                {
+                    path: 'add',
+                    name: 'expense.add',
+                    component: AddExpense,
+                    meta: { title: 'Add New Expense' }
+                },
+                {
+                    path: 'edit/:id',
+                    name: 'expense.edit',
+                    component: EditExpense,
+                    meta: { title: 'Edit Expense' }
+                },
+                {
+                    path: 'view/:id',
+                    name: 'expense.view',
+                    component: ViewExpense,
+                    meta: { title: 'View Expense'}
                 }
             ]
         }

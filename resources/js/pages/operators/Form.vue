@@ -18,21 +18,6 @@
             <small class="text-warning" v-if="$route.name == 'operator.edit'">Leave blank if you don't want to change password</small>
             <p class="text-danger" v-if="errors.password">{{ errors.password[0]}}</p>
         </div>
-        <!-- <div class="form-group" :class="{'has-error' : errors.role}">
-            <label for="">Role User</label>
-            <div class="col-md-auto" >
-                <label class="btn btn-outline-secondary btn-sm">
-                    <input type="radio" v-model="operator.role" value="1"> Admin
-                </label>
-                <label class="btn btn-outline-secondary btn-sm">
-                    <input type="radio" v-model="operator.role" value="2"> Finance
-                </label>
-                <label class="btn btn-outline-secondary btn-sm">
-                    <input type="radio" v-model="operator.role" value="3"> Operator
-                </label>
-            </div>
-            <p class="text-danger" v-if="errors.role">{{ errors.role[0]}}</p>
-        </div> -->
         <div class="form-group">
             <label for="">Outlet</label>
             <select name="outlet_id" class="form-control" v-model="operator.outlet_id" :class="{ 'is-invalid': errors.outlet_id }">

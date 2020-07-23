@@ -138,7 +138,7 @@ const actions = {
         })
     },
     //MENGHAPUS DATA
-    removeOperator({ dispatch }, payload){
+    removeOperator({ dispatch, commit }, payload){
         return new Promise((resolve, reject) => {
             //MENGIRIM PERMINTAAN KE SERVER UNTUK MENGHAPUS DATA
             //DENGAN METHOD DELETE DAN ID OUTLET DI URL

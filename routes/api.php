@@ -40,4 +40,15 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::get('/type-product', 'API\TypeController@index');
     Route::post('/type-product', 'API\TypeController@store');
+
+    Route::get('/expense', 'API\ExpenseController@index');
+    Route::post('/expense', 'API\ExpenseController@store');
+    Route::get('/expense/{id}/edit', 'API\ExpenseController@edit');
+    Route::put('/expense/{id}', 'API\ExpenseController@update');
+    Route::delete('/expense/{id}', 'API\ExpenseController@destroy');
+    Route::post('/expense/accept', 'API\ExpenseController@accept')->name('expense.accept');
+    Route::post('/expense/reject', 'API\ExpenseController@reject')->name('expense.reject');
+
+    Route::get('/notification', 'API\NotificationController@index');
+    Route::post('/notification', 'API\NotificationController@store');
 });

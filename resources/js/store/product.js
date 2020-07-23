@@ -105,7 +105,7 @@ const actions = {
         })
     },
     //delete a product by id
-    removeProduct({ dispatch }, payload){
+    removeProduct({ dispatch, commit }, payload){
         return new Promise((resolve, reject) => {
             $axios.delete(`/product/${payload}`)
             .then((res) => {
