@@ -74,9 +74,9 @@ export default {
         return {
             fieldss: [
                 { key: 'photo', label: '#' },
-                { key: 'name', label: 'Nama Operator' },
+                { key: 'name', label: 'Nama Operator', sortable: true },
                 { key: 'email', label: 'Email' },
-                { key: 'outlet_id', label: 'Outlet' },
+                { key: 'outlet_id', label: 'Outlet', sortable: true },
                 { key: 'actions', label: 'Aksi' }
             ],
             search: ''

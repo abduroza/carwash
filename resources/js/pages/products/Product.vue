@@ -73,13 +73,13 @@ export default {
     data() {
         return {
             fieldss: [
-                { key: 'name', label: 'Nama Produk'},
-                { key: 'type', label: 'Tipe'},
-                { key: 'size', label: 'Size'},
-                { key: 'description', label: 'Deskripsi'},
-                { key: 'price', label: 'Harga'},
-                { key: 'user_id', label: 'Admin'},
-                { key: 'actions', label: 'Aksi'}
+                { key: 'name', label: 'Nama Produk', sortable: true },
+                { key: 'type', label: 'Tipe', sortable: true },
+                { key: 'size', label: 'Size', sortable: true },
+                { key: 'description', label: 'Deskripsi' },
+                { key: 'price', label: 'Harga', sortable: true },
+                { key: 'user_id', label: 'Admin', sortable: true },
+                { key: 'actions', label: 'Aksi' }
             ],
             search: ''
         }

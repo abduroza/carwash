@@ -70,6 +70,10 @@ const actions = {
         return new Promise((resolve, reject) => {
             $axios.post(`/outlets`, state.outlet)
             .then((res) => {
+                this.flashMessage.success({
+                    title: 'Success Message Title',
+                    message: 'Hoorah, it is my fist npm package and it works!'
+                });
                 dispatch('getOutlets')
                 .then(() => {
                     resolve(res.data)

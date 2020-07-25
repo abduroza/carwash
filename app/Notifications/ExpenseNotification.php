@@ -39,8 +39,10 @@ class ExpenseNotification extends Notification implements ShouldQueue
     public function toDatabase($notifiable)
     {
         return [
+            //mendefinisikan apa saja yg akan dikirim
             'sender_id' => $this->user->id,
             'sender_name' => $this->user->name,
+            'sender_photo' => $this->user->photo,
             'expense' => $this->expense
         ];
     }
@@ -51,6 +53,7 @@ class ExpenseNotification extends Notification implements ShouldQueue
         return new BroadcastMessage([
             'sender_id' => $this->user->id,
             'sender_name' => $this->user->name,
+            'sender_photo' => $this->user->photo,
             'expense' => $this->expense
         ]);
     }

@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <flash-message class="sticky-top"></flash-message>
         <!-- header -->
         <div class="row" style="padding: 8px 0 8px 0">
             <div class="col-6">
@@ -14,6 +15,7 @@
         <!-- end header -->
         <!-- content -->
         <div class="col-md-12 bg-white mb-3">
+            
             <div class="row">
                 <router-view></router-view>
             </div>

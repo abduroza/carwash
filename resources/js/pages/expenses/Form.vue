@@ -1,4 +1,5 @@
 <template>
+    
     <div>
         <!-- class error untuk memberikan warna merah pada form jika ada error. error ini didapatkan dari laravel-->
         <div class="form-group"> 
@@ -11,7 +12,7 @@
         <div class="form-group"> 
             <label for="" >Harga</label>
             <input type="number" class="form-control" v-model="expense.price" :class="{'is-invalid' : errors.price}">
-            <p class="text-danger" v-if="errors.note">{{ errors.note[0]}}</p>
+            <p class="text-danger" v-if="errors.price">{{ errors.price[0]}}</p>
         </div>
         <div class="form-group"> 
             <label for="" >Catatan</label>

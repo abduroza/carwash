@@ -11,10 +11,10 @@ const state = () => ({
         note: '',
         price: '',
         user_id: '',
-        user: '', //dari backend masih ada error
 
         status: '',
-        reason: ''
+        reason: '',
+        user: '', //utk keprluan view
     },
     page: 1
 })
@@ -29,16 +29,16 @@ const mutations = {
         state.page = payload
     },
 
-    ASSIGN_FORM(state, payload){ //untuk keperluan edit
+    ASSIGN_FORM(state, payload){ //untuk keperluan edit, view, update
         state.expense = {
             title: payload.title,
             note: payload.note,
             price: payload.price,
             user_id: payload.user_id,
-            user: payload.user,
 
             status: payload.status,
-            reason: payload.reason
+            reason: payload.reason,
+            user: payload.user //untuk keperluan view
         }
     },
 
@@ -71,8 +71,10 @@ const actions = {
             $axios.post(`/expense`, state.expense)
             .then((res) => {
                 dispatch('getExpenses').then(() => resolve(res.data))
+                this.flash('Data sedang loaded', 'success'); //belum jalan
             })
             .catch((err) => {
+                console.log(err)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }

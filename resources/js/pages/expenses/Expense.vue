@@ -14,6 +14,9 @@
             <!-- items berisi data outlet yg akan di render ke table, sedangakn fields yg akan menjadi nama header pd table -->
             <b-table striped hover :items="expenses.data" :fields="fieldss">
                 <!-- template hanyalah optional saja untuk menginginkan tampilan sesuai yg diharapkan -->
+                <template v-slot:cell(price)="row">
+                    {{ row.item.price | currency }}                    
+                </template>
                 <template v-slot:cell(status)="row">
                     <!-- template status hanya untuk menampilkan tulian proses, diterima, ditolak. jika tidak diberi template akan menampilkan nilai sesuai field yg dikirimkan yaitu 0, 1 atau 2 -->
                     <span class="badge badge-warning" v-if="row.item.status == 0">Diproses</span>
@@ -66,13 +69,13 @@ export default {
     data() {
         return {
             fieldss: [
-                { key: 'title', label: 'Permintaan'},
-                { key: 'note', label: 'Catatan'},
-                { key: 'price', label: 'Biaya'},
-                { key: 'user', label: 'Operator/Admin'},
-                { key: 'status', label: 'Status'},
-                { key: 'reason', label: 'Alasan'},
-                { key: 'actions', label: 'Aksi'},
+                { key: 'title', label: 'Permintaan', sortable: true, tdClass: 'maxWidth' },
+                { key: 'note', label: 'Catatan', tdClass: 'maxWidth' }, //tdClass utk memberi class sesuai yg diinginkan
+                { key: 'price', label: 'Biaya', sortable: true }, //sortable untuk datatable
+                { key: 'user', label: 'User', sortable: true },
+                { key: 'status', label: 'Status', sortable: true },
+                { key: 'reason', label: 'Alasan', tdClass: 'maxWidth' },
+                { key: 'actions', label: 'Aksi' },
             ],
             search: ''
         }
@@ -100,7 +103,7 @@ export default {
         //jika kolom search ada yg diinputkan, langsung panggil getExpenses dg memberi value search
         search() {
             this.getExpenses(this.search)
-        }
+        },
     },
     methods: {
         ...mapActions('expense', ['getExpenses', 'removeExpense']),

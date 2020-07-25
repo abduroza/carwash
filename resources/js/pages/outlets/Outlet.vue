@@ -65,11 +65,11 @@ export default {
         return {
             fieldss: [
                 //FIELD UNTUK B-TABLE, PASTIKAN KEY NYA SESUAI DENGAN FIELD DATABASE AGAR OTOMATIS DI-RENDER
-                {key: 'code', label: 'Kode Outlet'},
-                {key: 'name', label: 'Nama Outlet'},
-                {key: 'address', label: 'Alamat'},
+                {key: 'code', label: 'Kode Outlet', sortable: true},
+                {key: 'name', label: 'Nama Outlet', sortable: true},
+                {key: 'address', label: 'Alamat', sortable: true},
                 {key: 'phone', label: 'No. Telp'},
-                {key: 'status', label: 'Status'},
+                {key: 'status', label: 'Status', sortable: true},
                 {key: 'actions', label: 'Aksi'},
             ],
             search: ''

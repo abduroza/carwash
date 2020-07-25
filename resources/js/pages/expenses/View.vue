@@ -63,7 +63,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
     name: 'ViewExpense',
     created() {
-        this.editExpense(this.$route.params.id).then()
+        this.editExpense(this.$route.params.id).then() //memakai edit expense untuk menampilkan data2
     },
     data() {
         return {
@@ -73,11 +73,12 @@ export default {
     },
     computed: {
         ...mapState('expense', {
-            expense: state => state.expense
+            expense: state => state.expense,
+            // expenses: state => state.expenses
         })
     },
     methods: {
-        ...mapActions('expense', ['editExpense', 'acceptExpense', 'rejectExpense']),
+        ...mapActions('expense', ['getExpenses', 'editExpense', 'acceptExpense', 'rejectExpense']),
         accept(){
             this.$swal({
                 title: 'Yakin Diterima?',

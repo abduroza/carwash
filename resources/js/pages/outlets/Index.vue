@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <FlashMessage :position="'right top'"></FlashMessage>
         <!-- header -->
         <div class="row" style="padding: 8px 0 8px 0">
             <div class="col-6">

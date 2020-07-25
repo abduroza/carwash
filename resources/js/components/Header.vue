@@ -40,58 +40,68 @@
                             </small>
                         </i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right clearfix">
-                        <li class="px-2 d-flex justify-content-start">
-                            <small>You have {{ notifications.length }} messages</small>
+                    <div class="dropdown-menu dropdown-menu-right clearfix bg-info" style="width: 250px;">
+                        <li class="m-1 d-flex justify-content-start">
+                            <small class="text-white">You have {{ notifications.length }} messages</small>
                         </li>
-                        <div class="overflow-auto">
-                            <b-list-group v-if="notifications.length > 0">
-                                <b-list-group-item href="#" v-for="(row, index) in notifications" :key="index" class="py-1 px-1">
+                        <div style="overflow-y: scroll; max-height: 230px;">
+                            <b-list-group style="" v-if="notifications.length > 0">
+                                <b-list-group-item v-for="(row, index) in notifications" :key="index" class="p-1">
                                     <a href="javascript:void(0)" @click="readNotif(row)" class="text-decoration-none text-dark">
                                         <div class="pull-left">
                                             <!-- menampilkan foto pengirim -->
-                                            <i v-if="authenticated.photo">
-                                                <img :src="'/storage/users/' + authenticated.photo" :width="50" :height="50" :alt="authenticated.name" class="rounded-circle">
+                                            <i v-if="row.data.sender_photo">
+                                                <img :src="'/storage/users/' + row.data.sender_photo" :width="50" :height="50" :alt="row.data.sender_name" class="rounded-circle">
                                             </i>
                                             <i v-else>
-                                                <img :src="'/storage/users/' + 'avatarDefault.png'" :width="50" :height="50" :alt="authenticated.name">
+                                                <img :src="'/storage/users/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.data.sender_name">
                                             </i>
                                         </div>
                                         <div>
-                                            <h6 class="my-0">
+                                            <h6 class="my-0 text-info">
                                                 <!-- menampilkan nama pengirim -->
                                                 {{ row.data.sender_name }}
                                             </h6>
                                             <!-- menampilkan waktu pesan dikirim dari sekarang -->
-                                            <small><i class="fa fa-clock-o"></i> {{ row.created_at | formatDate }} </small>
-                                            <p class="my-0">{{ row.data.expense.title.substr(0, 30) }}</p>
+                                            <small class="text-secondary"><i class="fa fa-clock-o"></i> {{ row.created_at | formatDate }} </small>
+                                            <p class="my-0" >{{ row.data.expense.title.substr(0, 30) }}</p>
                                         </div>
                                     </a>
                                 </b-list-group-item >
                             </b-list-group>
                         </div>
-
-                        <!-- <div class="overflow-auto">...</div> -->
                     </div>
                 </li>
-                <li class="nav-item dropdown ">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i v-if="authenticated.photo">
+                        <span v-if="authenticated.photo">
                             <img :src="'/storage/users/' + authenticated.photo" :width="23" :height="23" :alt="authenticated.name" class="rounded-circle">
-                        </i>
-                        <i v-else>
+                        </span>
+                        <span v-else>
                             <img :src="'/storage/users/' + 'avatarDefault.png'" :width="23" :height="23" :alt="authenticated.name">
-                        </i>
+                        </span>
                         <span class="hidden-xs">{{ authenticated.name }}</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right clearfix bg-white border-primary" aria-labelledby="navbarDropdown">
-                        <div class="px-2 d-flex justify-content-center">
-                            <span class="hidden-xs">{{ authenticated.name }}</span>
+                    <div class="dropdown-menu dropdown-menu-right clearfix" style="width: 230px;" aria-labelledby="navbarDropdown">
+                        <div class="px-2 mt-n2 bg-info d-flex justify-content-center">
+                            <div class="mt-2">
+                                <h6 class="d-flex justify-content-center">
+                                    <i v-if="authenticated.photo">
+                                        <img :src="'/storage/users/' + authenticated.photo" :width="80" :height="80" :alt="authenticated.name" class="rounded-circle">
+                                    </i>
+                                    <i v-else>
+                                        <img :src="'/storage/users/' + 'avatarDefault.png'" :width="80" :height="80" :alt="authenticated.name">
+                                    </i>
+                                </h6>
+                                <h6 class="text-center text-white">
+                                    {{ authenticated.name }}
+                                </h6>
+                            </div>
                         </div>
-                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-divider mt-0"></div>
                         <div class="px-2">
-                            <a class="btn btn-outline-primary btn-sm float-left" href="#">Profile</a>
-                            <a class="btn btn-outline-primary btn-sm float-right" href="javascript:void(0)" @click="logout" >Logout</a>
+                            <a class="btn btn-outline-info btn-sm float-left" href="#">Profile</a>
+                            <a class="btn btn-outline-info btn-sm float-right" href="javascript:void(0)" @click="logout" >Logout</a>
                         </div>
                     </div>
                 </li>

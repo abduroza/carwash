@@ -79,9 +79,9 @@ export default {
         return {
             fieldss: [
                 { key: 'photo', label: '#' },
-                { key: 'name', label: 'Nama User' },
+                { key: 'name', label: 'Nama User', sortable: true },
                 { key: 'email', label: 'Email' },
-                { key: 'role', label: 'Role' },
+                { key: 'role', label: 'Role', sortable: true },
                 { key: 'outlet_id', label: 'Outlet' },
                 { key: 'actions', label: 'Aksi' }
             ],

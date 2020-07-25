@@ -16,8 +16,13 @@ class ExpenseController extends Controller
     {
         $user = request()->user();
         $expenses = Expense::with(['user'])->orderBy('created_at', 'DESC');
-        if(request()->q != ''){
-            $expenses = $expenses->where('title', 'LIKE', '%'.request()->q.'%');
+        $input = request()->q;
+        if($input != ''){
+            $expenses = $expenses->where('title', 'LIKE', '%'.$input.'%')
+                                //menfilter di table user
+                                ->orWhereHas('user', function($query) use ($input) {
+                                return $query->where('name', 'LIKE', '%'.$input.'%');
+                                });
         }
 
         if(in_array($user->role, [1,3])){
@@ -42,13 +47,13 @@ class ExpenseController extends Controller
         //jika user yg ngajuan expense adlah superadmin dan finance maka status langsung diset approve 
         $status = $user->role == 0 || $user->role == 2 ? 1 : 0;
 
-        //menambahkan user_id dan status ke dalam request
-        $request->request->add([
+        $expense = Expense::create([
+            'title' => $request->title,
+            'price' => $request->price,
+            'note' => $request->note,
             'user_id' => $user->id,
             'status' => $status
         ]);
-
-        $expense = Expense::create($request->all());
 
         $expenseNotification = new ExpenseNotification($expense, $user);
 
@@ -76,8 +81,13 @@ class ExpenseController extends Controller
             'note' => 'nullable|string'
         ]);
 
-        $expense = Expense::with(['user'])->find($id);
-        $expense->update($request->except('id'));
+        $expense = Expense::with(['user'])->find($id); //juga memanggil eager loading user. karena edit ini dipakai juga oleh View.Vue untuk menampilkan nama user
+        //update dg cara mendefinisikan field2nya lebih aman. sehingga hanya field yg didefiniskan yg akan diproses. FE lebih menyukai
+        $expense->update([
+            'title' => $request->title,
+            'price' => $request->price,
+            'note' => $request->note
+        ]); 
 
         return response()->json(['status' => 'success']);
     }
