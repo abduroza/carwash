@@ -8,4 +8,11 @@ use App\Traits\UsesUuid;
 class Customer extends Model
 {
     use UsesUuid;
+
+    protected $guarded = [];
+
+    //relasi one to one dengan table deposite
+    public function deposite(){
+        return $this->hasOne('App\Models\Deposite');
+    }
 }

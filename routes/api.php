@@ -51,4 +51,10 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::get('/notification', 'API\NotificationController@index');
     Route::post('/notification', 'API\NotificationController@store');
+
+    Route::get('/customer', 'API\CustomerController@index');
+    Route::post('/customer', 'API\CustomerController@store');
+    Route::get('/customer/{id}/edit', 'API\CustomerController@edit');
+    Route::put('/customer/{id}', 'API\CustomerController@update');
+    Route::delete('/customer/{id}', 'API\CustomerController@destroy');
 });

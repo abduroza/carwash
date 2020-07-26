@@ -76,7 +76,7 @@ export default {
                 { key: 'photo', label: '#' },
                 { key: 'name', label: 'Nama Operator', sortable: true },
                 { key: 'email', label: 'Email' },
-                { key: 'outlet_id', label: 'Outlet', sortable: true },
+                { key: 'outlet_id', label: 'Outlet', sortable: false },
                 { key: 'actions', label: 'Aksi' }
             ],
             search: ''

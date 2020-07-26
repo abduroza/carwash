@@ -104,12 +104,12 @@ export default {
                     this.showFormType = false //tutup form isian type setlah berhasil membuat type baru
                 })
             })
-        },
-        //ketika halaman form ditinggalkan
-        destroyed() {
-            //form dibersihkan
-            this.CLEAR_FORM()
         }
+    },
+    //ketika halaman form ditinggalkan
+    destroyed() {
+        //form dibersihkan
+        this.CLEAR_FORM()
     }
 }
 </script>

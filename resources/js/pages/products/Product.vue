@@ -75,7 +75,7 @@ export default {
             fieldss: [
                 { key: 'name', label: 'Nama Produk', sortable: true },
                 { key: 'type', label: 'Tipe', sortable: true },
-                { key: 'size', label: 'Size', sortable: true },
+                { key: 'size', label: 'Size', sortable: false },
                 { key: 'description', label: 'Deskripsi' },
                 { key: 'price', label: 'Harga', sortable: true },
                 { key: 'user_id', label: 'Admin', sortable: true },

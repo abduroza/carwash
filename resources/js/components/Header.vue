@@ -27,6 +27,9 @@
                     <li class="nav-item" :class="{ 'active' : $route.path == '/expense/'}">
                         <router-link class="nav-link" :to="{ name: 'expenses.data' }">Expenses</router-link>
                     </li>
+                    <li class="nav-item" :class="{ 'active' : $route.path == '/customer/'}">
+                        <router-link class="nav-link" :to="{ name: 'customers.data' }">Customers</router-link>
+                    </li>
                 <!-- </ul> -->
             </ul>
 

@@ -37,7 +37,6 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-
             $user_id = auth()->user()->id;
             $product = Product::create([
                 'name' => $request->name,
@@ -53,7 +52,7 @@ class ProductController extends Controller
             return response()->json(['status' => 'success', 'data' => $product], 201);
         } catch (\Exception $err) {
             DB::rollback();
-            return response()->json(['status' => 'error', 'data' => $err->getMessage()], 400);
+            return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);
         }
     }
 
@@ -79,7 +78,7 @@ class ProductController extends Controller
             $product = Product::find($id);
             $product->update($request->all());
 
-            //update relasi many to many with pivot
+            //update relasi many to many with pivot product_type
             $product->type()->updateExistingPivot($request->type_id, ['size' => $request->size]);
 
             DB::commit();
@@ -98,8 +97,4 @@ class ProductController extends Controller
 
         return response()->json(['status' => 'success']);
     }
-
-
-    
-
 }
