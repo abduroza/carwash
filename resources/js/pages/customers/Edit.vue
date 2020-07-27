@@ -10,21 +10,29 @@
             <customer-form></customer-form>
             <!-- tombol update untuk mengupdate data terbaru -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Update
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Update</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import FormCustomer from './Form.vue'
 export default {
     name: 'EditCustomer',
     created() {
         //sebelum component di render, request ke server sesuai dg id untuk mendapatkan data yg mau di update
         this.editCustomer(this.$route.params.id)
+    },
+    computed: {
+        ...mapState('customer', {
+            isLoading: state => state.isLoading
+        })
     },
     methods: {
         ...mapActions('customer', ['editCustomer', 'updateCustomer']),

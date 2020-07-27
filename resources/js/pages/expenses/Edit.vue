@@ -10,8 +10,11 @@
             <expense-form></expense-form>
             <!-- tombol update untuk mengupdate data terbaru -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Update
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Update</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
@@ -19,12 +22,17 @@
 </template>
 <script>
 import FormExpense from './Form.vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
     name: 'EditExpense',
     created() {
         //ketika form edit dibuka, maka lamngsung memanggil editExpense
         this.editExpense(this.$route.params.id)
+    },
+    computed: {
+        ...mapState('expense', {
+            isLoading: state => state.isLoading
+        })
     },
     methods: {
         ...mapActions('expense', ['editExpense', 'updateExpense']),

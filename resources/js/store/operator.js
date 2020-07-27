@@ -14,7 +14,8 @@ const state = () => ({
         outlet_id: '',
         photo: ''
     },
-    page: 1 //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
+    page: 1, //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
+    isLoading: false
 })
 
 const mutations = {
@@ -50,6 +51,9 @@ const mutations = {
             outlet_id: '',
             photo: ''
         }
+    },
+    SET_LOADING(state, payload){
+        state.isLoading = payload
     }
 }
 
@@ -80,6 +84,7 @@ const actions = {
         form.append('photo', state.operator.photo)
 
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/user`, form, {
                 //KARENA TERDAPAT FILE FOTO, MAKA HEADERNYA DITAMBAHKAN multipart/form-data
                 headers: {
@@ -87,9 +92,11 @@ const actions = {
                 }
             })
             .then((res) => {
+                commit('SET_LOADING', false)
                 dispatch('getOperators').then(() => resolve(res.data))
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 //APABILA TERJADI ERROR VALIDASI
                 //DIMANA LARAVEL MENGGUNAKAN CODE 422
                 if(err.response.status == 422){
@@ -122,6 +129,7 @@ const actions = {
         form.append('photo', state.operator.photo)
 
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/operator/${payload}`, form, {
                 //KARENA TERDAPAT FILE FOTO, MAKA HEADERNYA DITAMBAHKAN multipart/form-data
                 headers: {
@@ -130,9 +138,11 @@ const actions = {
             })
             .then((res) => {
                 commit('CLEAR_FORM')
+                commit('SET_LOADING', false)
                 resolve(res.data)
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 commit('SET_ERRORS', err.response.data.errors, { root: true })
             })
         })

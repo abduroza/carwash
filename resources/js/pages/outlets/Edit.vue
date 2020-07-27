@@ -10,8 +10,11 @@
             <outlet-form></outlet-form>
             <!-- tombol update untuk mengupdate data terbaru -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Update
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Update</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
@@ -19,13 +22,18 @@
 </template>
 <script>
 import FormOutlet from './Form.vue'
-import {mapActions} from 'vuex'
+import {mapActions, mapState} from 'vuex'
 export default {
     name: 'EditOutlet',
     created() {
         //SEBELUM COMPONENT DI-RENDER KITA MELAKUKAN REQUEST KESERVER
         //BERDASARKAN CODE YANG ADA DI URL
         this.editOutlet(this.$route.params.id)
+    },
+    computed: {
+        ...mapState('outlet', {
+            isLoading: state => state.isLoading
+        })
     },
     methods: {
         ...mapActions('outlet', ['editOutlet', 'updateOutlet']),

@@ -6,6 +6,7 @@ const state = () => ({
     type: {
         name_type: '' //name_type adlah inputan yg diminta oleh backend. kalau database nama kolomnya "name"
     },
+    isLoading: false
 })
 
 const mutations = {
@@ -18,6 +19,9 @@ const mutations = {
             name_type: ''
         }
     },
+    SET_LOADING(state, payload){
+        state.isLoading = payload
+    }
 }
 
 const actions = {
@@ -32,11 +36,14 @@ const actions = {
     },
     addType({ commit, dispatch, state}){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/type-product`, state.type)
             .then((res) => {
+                commit('SET_LOADING', false)
                 dispatch('getTypes').then(() => resolve(res.data))
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }

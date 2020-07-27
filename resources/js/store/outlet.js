@@ -13,7 +13,8 @@ const state = () => ({
         address: '',
         phone: ''
     },
-    page: 1 //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
+    page: 1, //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
+    isLoading: false
 })
 
 const mutations = {
@@ -47,6 +48,9 @@ const mutations = {
             address: '',
             phone: ''
         }
+    },
+    SET_LOADING(state, payload){
+        state.isLoading = payload
     }
 }
 
@@ -68,18 +72,14 @@ const actions = {
     //FUNGSI UNTUK MENAMBAHKAN DATA BARU
     submitOutlet({ dispatch, commit, state }){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/outlets`, state.outlet)
             .then((res) => {
-                this.flashMessage.success({
-                    title: 'Success Message Title',
-                    message: 'Hoorah, it is my fist npm package and it works!'
-                });
-                dispatch('getOutlets')
-                .then(() => {
-                    resolve(res.data)
-                })
+                commit('SET_LOADING', false)
+                dispatch('getOutlets').then(() => resolve(res.data))
             })
             .catch((error) => {
+                commit('SET_LOADING', false)
                 //APABILA TERJADI ERROR VALIDASI
                 //DIMANA LARAVEL MENGGUNAKAN CODE 422
                 if(error.response.status == 422){
@@ -103,6 +103,7 @@ const actions = {
     //UNTUK MENGUPDATE DATA BERDASARKAN CODE YANG SEDANG DIEDIT
     updateOutlet({ state, commit }, payload){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE DIURL
             //DAN MENGIRIMKAN DATA TERBARU YANG TELAH DIEDIT
             //MELALUI STATE OUTLET
@@ -110,9 +111,11 @@ const actions = {
             .then((res) => {
                 //FORM DIBERSIHKAN
                 commit('CLEAR_FORM')
+                commit('SET_LOADING', false)
                 resolve(res.data)
             })
             .catch((error) => {
+                commit('SET_LOADING', false)
                 //kirim value error ke store.js
                 commit('SET_ERRORS', error.response.data.errors, { root: true })
             })

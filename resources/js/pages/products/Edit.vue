@@ -10,21 +10,29 @@
             <product-form></product-form>
             <!-- tombol update untuk mengupdate data terbaru -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Update
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Update</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import FormProduct from './Form.vue'
 export default {
     name: 'EditProduct',
     created() {
         //editProduct() membutuhkan parameter id
         this.editProduct(this.$route.params.id)
+    },
+    computed: {
+        ...mapState('product', {
+            isLoading: state => state.isLoading
+        })
     },
     methods: {
         ...mapActions('product', ['editProduct', 'updateProduct']),

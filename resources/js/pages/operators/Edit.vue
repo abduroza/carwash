@@ -10,8 +10,11 @@
             <operator-form></operator-form>
             <!-- tombol update untuk mengupdate data terbaru -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Update
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Update</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
@@ -19,12 +22,17 @@
 </template>
 <script>
 import FormOperator from './Form.vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
     name: 'EditOutlet',
     created() {
         //sebelum komponen dirender, melakukan request ke server berdasarkan kode yg dikirmkan di route
         this.editOperator(this.$route.params.id)
+    },
+    computed: {
+        ...mapState('operator', {
+            isLoading: state => state.isLoading
+        })
     },
     methods: {
         ...mapActions('operator', ['editOperator', 'updateOperator']),

@@ -10,8 +10,11 @@
             <customer-form></customer-form>
             <!-- tombol add untuk menambahkan -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Add New
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Add New</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
@@ -19,9 +22,14 @@
 </template>
 <script>
 import FormCustomer from './Form.vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
     name: 'AddCustomer',
+    computed: {
+        ...mapState('customer', {
+            isLoading: state => state.isLoading
+        })
+    },
     methods: {
         ...mapActions('customer', ['submitCustomer']),
         submit(){

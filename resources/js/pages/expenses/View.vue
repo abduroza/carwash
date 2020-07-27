@@ -42,8 +42,8 @@
                 <!-- jika status = 0, maka tombol terima dan tolak ditampilkan -->
                 <div class="pull-right" v-if="expense.status == 0 || (expense.status == 0 && !formReason)">
                     <!-- jika yg ditekan tombol tolak, maka formReason akan ditampilkan -->
-                    <button class="btn btn-danger btn-sm" @click="formReason = true">Tolak</button>
-                    <button class="btn btn-primary btn-sm" @click="accept">Terima</button>
+                    <button class="btn btn-danger btn-sm" @click="formReason = true" :disabled="isLoading">Tolak</button>
+                    <button class="btn btn-primary btn-sm" @click="accept" :disabled="isLoading">Terima</button>
                 </div>
             </template>
             <div v-if="formReason">
@@ -52,7 +52,12 @@
                     <input type="text" v-model="inputReason" class="form-control">
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary btn-sm pull-right" @click="reject">Respon Penolakan</button>
+                    <button class="btn btn-primary btn-sm pull-right" @click="reject" :disabled="isLoading">
+                        <span v-if="!isLoading"> Respon Penolakan</span>
+                        <div v-else-if="isLoading">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -74,7 +79,7 @@ export default {
     computed: {
         ...mapState('expense', {
             expense: state => state.expense,
-            // expenses: state => state.expenses
+            isLoading: state => state.isLoading
         })
     },
     methods: {

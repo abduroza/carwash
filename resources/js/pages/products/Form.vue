@@ -30,7 +30,7 @@
                     <div class="input-group">
                         <input type="text" placeholder="Mobil, Motor, Truk..." v-model="type.name_type" class="form-control" :class="{ 'is-invalid': errors.name_type }">
                         <div class="input-group-append">
-                            <a  href="javascript:void(0)" class="btn btn-outline-primary" id="basic-addon2" @click="addNewType">Save</a>
+                            <a  href="javascript:void(0)" class="btn btn-outline-primary" id="basic-addon2" @click="addNewType" :disabled="isLoading">Save</a>
                         </div>
                         
                     </div>
@@ -90,6 +90,7 @@ export default {
         ...mapState('type', {
             types: state => state.types, //mengambil state types di type.js
             type: state => state.type, //mengambil dan mengisi state type di type.js
+            isLoading: state => state.isLoading
         }),
     },
     methods: {

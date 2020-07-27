@@ -16,7 +16,8 @@ const state = () => ({
         reason: '',
         user: '', //utk keprluan view
     },
-    page: 1
+    page: 1,
+    isLoading: false
 })
 
 const mutations = {
@@ -52,6 +53,9 @@ const mutations = {
             status: '',
             reason: ''
         }
+    },
+    SET_LOADING(state, payload){
+        state.isLoading = payload
     }
 }
 
@@ -68,13 +72,15 @@ const actions = {
     },
     submitExpense({ state, commit, dispatch }){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/expense`, state.expense)
             .then((res) => {
+                commit('SET_LOADING', false)
                 dispatch('getExpenses').then(() => resolve(res.data))
-                this.flash('Data sedang loaded', 'success'); //belum jalan
+                // this.flash('Data sedang loaded', 'success'); //belum jalan. ada error _this.flash is not a function
             })
             .catch((err) => {
-                console.log(err)
+                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }
@@ -92,12 +98,15 @@ const actions = {
     },
     updateExpense({ state, commit }, payload){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.put(`/expense/${payload}`, state.expense)
             .then((res) => {
                 commit('CLEAR_FORM')
+                commit('SET_LOADING', false)
                 resolve(res.data)
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }
@@ -129,10 +138,13 @@ const actions = {
     },
     rejectExpense({ commit }, payload){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/expense/reject`, payload)
             .then((res) => {
+                commit('SET_LOADING', false)
                 resolve(res.data)
             }).catch((err) => {
+                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }

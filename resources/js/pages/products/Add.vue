@@ -10,18 +10,26 @@
             <product-form></product-form>
             <!-- tombol add untuk menambahkan -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Add New
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Add New</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import FormProduct from './Form.vue'
 export default {
     name: 'AddProduct',
+    computed: {
+        ...mapState('product', {
+            isLoading: state => state.isLoading
+        })
+    },
     methods: {
         ...mapActions('product', ['submitProduct']), //panggil submitProduct di product.js
         submit(){

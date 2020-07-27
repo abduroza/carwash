@@ -11,7 +11,8 @@ const state = () => ({
         phone: '',
         amount: 0
     },
-    page: 1
+    page: 1,
+    isLoading: false
 })
 
 const mutations = {
@@ -41,6 +42,9 @@ const mutations = {
             phone: '',
             amount: ''
         }
+    },
+    SET_LOADING(state, payload){
+        state.isLoading = payload
     }
 }
 
@@ -57,11 +61,14 @@ const actions = {
     },
     submitCustomer({ state, commit, dispatch }){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/customer`, state.customer)
             .then((res) => {
+                commit('SET_LOADING', false)
                 dispatch('getCustomers').then(() => resolve(res.data))
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }
@@ -79,12 +86,15 @@ const actions = {
     },
     updateCustomer({ commit, state }, payload){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.put(`/customer/${payload}`, state.customer)
             .then((res) => {
                 commit('CLEAR_FORM')
+                commit('SET_LOADING', false)
                 resolve(res.data)
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 if (err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, {root: true})
                 }

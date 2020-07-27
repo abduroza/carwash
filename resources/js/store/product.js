@@ -13,7 +13,8 @@ const state = () => ({
         price: '',
         user_id: ''
     },
-    page: 1 //mencatat paginate yg diakses, dg default page 1
+    page: 1, //mencatat paginate yg diakses, dg default page 1
+    isLoading: false
 })
 
 const mutations = {
@@ -48,6 +49,9 @@ const mutations = {
             price: '',
             user_id: ''
         }
+    },
+    SET_LOADING(state, payload){
+        state.isLoading = payload
     }
 }
 
@@ -69,11 +73,14 @@ const actions = {
     //create a new data
     submitProduct({ commit, dispatch, state }){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.post(`/product`, state.product)
             .then((res) => {
+                commit('SET_LOADING', false)
                 dispatch('getProducts').then(() => resolve(res.data))
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, {root: true})
                 }
@@ -94,12 +101,15 @@ const actions = {
     //update product by id. payload passing the id product
     updateProduct({ state, commit }, payload){
         return new Promise((resolve, reject) => {
+            commit('SET_LOADING', true)
             $axios.put(`/product/${payload}`, state.product)
             .then((res) => {
                 commit('CLEAR_FORM')
+                commit('SET_LOADING', false)
                 resolve(res.data)
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 commit('SET_ERRORS', err.response.data.errors, { root: true })
             })
         })
