@@ -50,9 +50,11 @@ class CustomerController extends Controller
                 'amount' => $request->amount,
                 'customer_id' => $customer->id
             ]);
-            
+
+            $customer->load('deposite'); //supaya response yg dikirim juga memyertakan table deposite. relationship harus dibuat dulu
+
             DB::commit();
-            return response()->json(['status' => 'success'], 201);
+            return response()->json(['status' => 'success', 'data' => $customer], 201);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);

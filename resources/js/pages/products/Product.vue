@@ -12,9 +12,12 @@
         <div>
             <!-- :items="products.data" mengambil dari computed mapState -->
             <!-- items berisi data user yg akan di render ke table, sedangakn fields akan menjadi nama header pd table -->
-            <b-table striped hover :items="products.data" :fields="fieldss">
+            <b-table striped hover :items="products.data" :fields="fieldss" :tbody-transition-props="transProps" primary-key="index">
                 <!-- template hanyalah optional saja untuk menginginkan tampilan sesuai yg diharapkan -->
                 <!-- :fields="fields" menampilkan label, sedangkan v-slot:cell(type)="row" menampilkan key  -->
+                <template v-slot:cell(index)="row">
+                    {{ row.index + 1 }}
+                </template>
                 <template v-slot:cell(type)="row">
                     {{ row.item.type[0].name }}
                 </template>
@@ -73,14 +76,16 @@ export default {
     data() {
         return {
             fieldss: [
+                { key: 'index', label: 'No.' }, //index is virtual column. doesn't exist in items
                 { key: 'name', label: 'Nama Produk', sortable: true },
                 { key: 'type', label: 'Tipe', sortable: true },
                 { key: 'size', label: 'Size', sortable: false },
                 { key: 'description', label: 'Deskripsi' },
                 { key: 'price', label: 'Harga', sortable: true },
                 { key: 'user_id', label: 'Admin', sortable: true },
-                { key: 'actions', label: 'Aksi' }
+                { key: 'actions', label: 'Aksi' } //actions is virtual column
             ],
+            transProps: { name: 'flip-list' }, //nama transisi. memanggil class css di style.css
             search: ''
         }
     },

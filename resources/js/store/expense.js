@@ -81,6 +81,7 @@ const actions = {
             })
             .catch((err) => {
                 commit('SET_LOADING', false)
+                console.log(err)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }

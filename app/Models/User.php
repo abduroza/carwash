@@ -18,6 +18,10 @@ class User extends Authenticatable
         return $this->belongsTo(Outlet::class);
     }
 
+    public function order(){
+        return $this->hasMany(Order::class);
+    }
+
     //membuat local scope. Fungsi ini untuk mengambil data dimana role = 3. Karena role 3 adalah user dengan tipe operator
     public function scopeOperator($query){
         return $query->where('role', 3);

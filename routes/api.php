@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::get('/type-product', 'API\TypeController@index');
     Route::post('/type-product', 'API\TypeController@store');
+    Route::get('/type-product/{id}', 'API\TypeController@showTypeForTransaction');
+    Route::get('/type-product/{id}/edit', 'API\TypeController@showProductForTrx');
 
     Route::get('/expense', 'API\ExpenseController@index');
     Route::post('/expense', 'API\ExpenseController@store');
@@ -57,4 +59,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/customer/{id}/edit', 'API\CustomerController@edit');
     Route::put('/customer/{id}', 'API\CustomerController@update');
     Route::delete('/customer/{id}', 'API\CustomerController@destroy');
+
+    Route::get('/transaction', 'API\OrderController@index');
+    Route::post('/transaction', 'API\OrderController@store');
 });

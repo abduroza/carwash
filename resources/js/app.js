@@ -4,28 +4,19 @@ import store from './store.js'
 import App from './App.vue'
 
 import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueSweetalert2 from 'vue-sweetalert2'
 import VueCurrencyFilter from 'vue-currency-filter' //format mata uang
 import VueFlashMessage from 'vue-flash-message';
+require('vue-flash-message/dist/vue-flash-message.min.css');
 
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { mapGetters, mapActions, mapState } from 'vuex'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 
-Vue.use(VueFlashMessage, {
-    messageOptions: {
-      timeout: 3000,
-      important: true,
-      autoEmit: false,
-      pauseOnInteract: true
-    }
-});
-
 Vue.use(VueSweetalert2)
 Vue.use(BootstrapVue)
-Vue.use(VueCurrencyFilter,
-    {
+Vue.use(VueCurrencyFilter, {
         symbol : 'Rp',
         thousandsSeparator: '.',
         fractionCount: 0,
@@ -33,7 +24,15 @@ Vue.use(VueCurrencyFilter,
         symbolPosition: 'front',
         symbolSpacing: true
     })
-
+Vue.use(VueFlashMessage, {
+        messageOptions: {
+          timeout: 3000,
+          important: true,
+          autoEmit: false,
+          pauseOnInteract: true
+        }
+    });
+    
 
 new Vue({
     el: '#appku',

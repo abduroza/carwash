@@ -61,10 +61,11 @@ const actions = {
         //cek apakah di payload ada value search yg dikirmkam
         let search = typeof payload != 'undefined' ? payload : ''
         return new Promise((resolve, reject) => {
-            //fetch data dari apai dengan mengirimkan page dan search
+            //fetch data dari api dengan mengirimkan page dan search
             $axios.get(`/product?page=${state.page}&q=${search}`)
             .then((res) => {
                 //simpan data ke state melalui mutations
+                console.log(res.data)
                 commit('ASSIGN_DATA', res.data)
                 resolve(res.data)
             })

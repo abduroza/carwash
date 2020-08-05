@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="">Tipe Kendaraan 
                         <sup>
-                            <a @click="showFormType = true" href="javascript:void(0)" v-if="!showFormType">Add New</a>
+                            <a @click="showFormType = true" href="javascript:void(0)" v-if="!showFormType" class="text-decoration-none">Add New</a>
                         </sup>
                     </label>
                     <select class="form-control" v-model="product.type_id" :class="{ 'is-invalid': errors.type_id }">

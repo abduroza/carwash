@@ -18,9 +18,9 @@ class ProductController extends Controller
         $products = Product::with(['type','user'])->orderBy('created_at', 'DESC');
         if(request()->q != '' ){
             $products = $products->where('name', 'LIKE', '%'.request()->q.'%');
-        }    
+        }
 
-        $products = $products->paginate(5);
+        $products = $products->paginate(10);
 
         return new ProductCollection($products);
     }

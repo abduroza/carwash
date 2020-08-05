@@ -15,4 +15,8 @@ class Customer extends Model
     public function deposite(){
         return $this->hasOne('App\Models\Deposite');
     }
+
+    public function order(){
+        return $this->hasMany('App\Models\Order');
+    }
 }

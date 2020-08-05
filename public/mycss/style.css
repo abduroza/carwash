@@ -22,3 +22,7 @@ main > .container {
   .minWidth {
     min-width: 220px;
   }
+  table .flip-list-move {
+    transition: transform 1s;
+    }
+    
