@@ -227,7 +227,7 @@ const router = new Router({
                     path: 'view/:id',
                     name: 'transaction.view',
                     component: ViewTransaction,
-                    meta: { title: 'View transaction' }
+                    meta: { title: 'View Transaction' }
                 }
             ]
         }

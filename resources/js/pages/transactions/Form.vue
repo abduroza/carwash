@@ -100,7 +100,7 @@
             <div class="col-md-12" v-if="isSuccess">
                 <div class="alert alert-success">
                     Transaksi Berhasil, Total Tagihan: {{ total | currency }}
-                    <strong><router-link :to="{ name: 'transactions.view', params: {id: order_id} }" class="text-decoration-none">Lihat Detail</router-link></strong>
+                    <strong><router-link :to="{ name: 'transaction.view', params: {id: order_id} }" class="text-decoration-none">Lihat Detail</router-link></strong>
                 </div>
             </div>
         </div>

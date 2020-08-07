@@ -65,7 +65,6 @@ const actions = {
             $axios.get(`/product?page=${state.page}&q=${search}`)
             .then((res) => {
                 //simpan data ke state melalui mutations
-                console.log(res.data)
                 commit('ASSIGN_DATA', res.data)
                 resolve(res.data)
             })

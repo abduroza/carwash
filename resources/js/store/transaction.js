@@ -24,7 +24,7 @@ const mutations = {
     SET_PAGE(state, payload){
         state.page = payload
     },
-    ASSIGN_TRANSACTION(state, payload){
+    ASSIGN_ORDER(state, payload){
         state.order = payload
     },
     ASSIGN_DATA_TRANSACTION(state, payload){
@@ -87,20 +87,11 @@ const actions = {
         })
     },
     //mengambil data transaksi
-    editTransaction({ commit }, payload){
+    viewTransaction({ commit }, payload){
         return new Promise((resolve, reject) => {
-            $axios.get(`/transaction/${payload}/edit`)
+            $axios.get(`/transaction/${payload}/view`)
             .then((res) => {
-                commit('ASSIGN_TRANSACTION', res.data.data)
-                resolve(res.data)
-            })
-        })
-    },
-    //change status in table transaction to 1 / done
-    completeItem({commit}, payload){
-        return new Promise((resolve, reject) => {
-            $axios.post(`/transaction/complete-item`, payload)
-            .then((res) => {
+                commit('ASSIGN_ORDER', res.data.data)
                 resolve(res.data)
             })
         })
@@ -109,6 +100,15 @@ const actions = {
     payment({ commit }, payload){
         return new Promise((resolve, reject) => {
             $axios.post(`/transaction/payment`, payload)
+            .then((res) => {
+                resolve(res.data)
+            })
+        })
+    },
+    //change status in table transactions to 1(done)
+    completeItem({commit}, payload){
+        return new Promise((resolve, reject) => {
+            $axios.post(`/transaction/complete-item`, payload)
             .then((res) => {
                 resolve(res.data)
             })
