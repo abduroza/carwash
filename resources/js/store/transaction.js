@@ -7,7 +7,7 @@ const state = () => ({
     // products: [], //menampung data product yg direquest
     order: [],
     page: 1,
-    list_transaction: [],
+    transactions: [], //menampung semua data transaksi
     isLoading: false
 })
 
@@ -28,7 +28,7 @@ const mutations = {
         state.order = payload
     },
     ASSIGN_DATA_TRANSACTION(state, payload){
-        state.list_transaction = payload
+        state.transactions = payload
     },
     SET_LOADING(state, payload){
         state.isLoading = payload
@@ -116,9 +116,10 @@ const actions = {
     },
     getTransactions({commit, state}, payload){
         let search = typeof payload.search != 'undefined' ? payload.search : ''
-        let status = typeof payload.status != 'undefined' ? payload.status : ''
+        let isPaid = typeof payload.isPaid != 'undefined' ? payload.isPaid : ''
         return new Promise((resolve, reject) => {
-            $axios.get(`/transaction?page=${state.page}&search=${search}&status=${status}`)
+            console.log(isPaid)
+            $axios.get(`/transaction?page=${state.page}&q=${search}&isPaid=${isPaid}`)
             .then((res) => {
                 commit('ASSIGN_DATA_TRANSACTION', res.data)
                 resolve(res.data)

@@ -30,12 +30,12 @@
                     <li class="nav-item" :class="{ 'active' : $route.path == '/customer/'}">
                         <router-link class="nav-link" :to="{ name: 'customers.data' }">Customers</router-link>
                     </li>
-                    <li class="nav-item dropdown " :class="{ 'active' : $route.path == '/transaction/'}">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item dropdown" :class="{ 'active' : $route.path == '/transaction/'}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Transactions
                         </a>
                         <div class="dropdown-menu dropdown-menu-left">
-                            <router-link class="dropdown-item" :to="{ name: 'transactions.list' }">List</router-link>
+                            <router-link class="dropdown-item" :to="{ name: 'transactions.data' }">List</router-link>
                             <router-link class="dropdown-item" :to="{ name: 'transaction.add' }">Add New</router-link>
                         </div>
                     </li>

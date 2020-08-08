@@ -187,7 +187,7 @@ class OrderController extends Controller
     {
         $search = request()->q; //menampung queri pencarian
         $user = request()->user(); //mengambil value user yg sedang login
-        $status = request()->isPaid; //menampung queri status pembayarn. berguna utk FE saat memfilter berdasarkan status pembayaran 
+        $isPaid = request()->isPaid; //menampung queri status pembayarn. berguna utk FE saat memfilter berdasarkan status pembayaran 
 
         //whereHas digunakan untuk menfilter pencarian di table yg berbeda
         $orders = Order::with(['user', 'customer', 'transaction'])->orderBy('created_at', 'DESC')
@@ -197,20 +197,19 @@ class OrderController extends Controller
                     ->orWhere('address', 'LIKE', '%'.$search.'%');
             });
 
-        //jika statusnya adalah 0 dan 1 maka ambil semuanya. 0 belum bayar, 1 sudah bayar
-        // if(in_array($status, [0,1])){
-        //     //maka ambil data berdasarkan status tersebut
-        //     $orders = $orders->where('isPaid', $status);
-        // }
+        // jika statusnya adalah 0 atau 1 maka ambil semuanya. 0 belum bayar, 1 sudah bayar
+        if(in_array($isPaid, [0,1])){
+            //maka ambil data berdasarkan status tersebut
+            $orders = $orders->where('isPaid', $isPaid);
+        }
 
         //jika rolenya bukan superadmin. Ambil hanya data dia saja
         if($user->role != 0){
             $orders = $orders->where('user_id', $user->id);
         }
 
-        // $orders = $orders->paginate(10);
+        $orders = $orders->paginate(10);
 
-        return response()->json(['data' => $orders->get()]);
-        // return new OrderCollection($orders);
+        return new OrderCollection($orders);
     }
 }

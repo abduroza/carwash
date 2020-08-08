@@ -38,6 +38,7 @@ import EditCustomer from './pages/customers/Edit.vue'
 import IndexTransaction from './pages/transactions/Index.vue'
 import AddTransaction from './pages/transactions/Add.vue'
 import ViewTransaction from './pages/transactions/View.vue'
+import DataTransaction from './pages/transactions/Transaction.vue'
 
 Vue.use(Router)
 
@@ -228,6 +229,12 @@ const router = new Router({
                     name: 'transaction.view',
                     component: ViewTransaction,
                     meta: { title: 'View Transaction' }
+                },
+                {
+                    path: 'list', //biasanya kalau data cuma ''. ini pakai 'list' supaya dropdown bisa hilang setelah di klik
+                    name: 'transactions.data',
+                    component: DataTransaction,
+                    meta: { title: 'List Transaction' }
                 }
             ]
         }

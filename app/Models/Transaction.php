@@ -19,7 +19,7 @@ class Transaction extends Model
         if($this->status == 1){
             return '<span class="badge badge-success">Selesai</span>';
         }
-        return '<span class="badge badge-primary">Process</span>';
+        return '<span class="badge badge-warning">Process</span>';
     }
 
     public function getTimeAttribute(){
@@ -27,7 +27,7 @@ class Transaction extends Model
         if($this->checkout){ //jika checkout tidak null
             return $this->checkin->format('d-m-Y H:i') . '  s/d  ' . $this->checkout->format('d-m-Y H:i');
         }
-        return $this->checkin->format('d-m-Y H:i') . '  s/d  ' . $this->checkout;
+        return $this->checkin->format('d-m-Y H:i');
     }
     
     public function order(){
