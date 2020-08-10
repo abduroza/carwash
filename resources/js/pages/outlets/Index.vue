@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <FlashMessage :position="'right top'"></FlashMessage>
+        <flash-message class="" :position="'right top'"></flash-message>
         <!-- header -->
         <div class="row" style="padding: 8px 0 8px 0">
             <div class="col-6">
@@ -27,7 +27,8 @@ import Breadcrumb from '../../components/Breadcrumb.vue'
 export default {
     name: 'IndexOutlet',
     components: {
-        'breadcrumb' : Breadcrumb
+        'breadcrumb' : Breadcrumb,
+        // 'FlashMessage': VueFlashMessage
     }
 }
 </script>

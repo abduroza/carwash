@@ -13,14 +13,14 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::with(['deposite'])->orderBy('created_at', 'DESC');
+        $customers = Customer::with(['deposite'])->orderBy('name', 'ASC');
         if(request()->q != ''){
             $customers = $customers->where('nik', 'LIKE', '%'.request()->q.'%')
                                 ->orWhere('name', 'LIKE', '%'.request()->q.'%')
                                 ->orWhere('address', 'LIKE', '%'.request()->q.'%')
                                 ->orWhere('phone', 'LIKE', '%'.request()->q.'%');
         }
-        $customers = $customers->paginate(5);
+        $customers = $customers->paginate(8);
 
         return new CustomerCollection($customers);
     }

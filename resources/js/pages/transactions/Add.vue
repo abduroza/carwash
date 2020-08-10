@@ -17,7 +17,7 @@
                     </div>
                 </button>
                 <button class="btn btn-danger btn-sm" @click.prevent="clearForm">
-                    Clear Form
+                    <span class="fa fa-remove" data-toggle="tooltip" data-placement="top" title="Bersihkan form"> Clear Form</span>
                 </button>
             </div>
         </div>

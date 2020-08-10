@@ -3,12 +3,20 @@ import { reject } from 'lodash'
 
 const state = () => ({
     customers: [], //menampunng data customer yg di request
-    type: [], //menampung data type yg di request
-    // products: [], //menampung data product yg direquest
-    order: [],
+    type: [], //menampung data type yg di request yg juga mengandung product dan size
     page: 1,
-    transactions: [], //menampung semua data transaksi
-    isLoading: false
+    order: { //ini digunakan oleh viewTransaction, dan juga create transaction (di Form.vue)
+        customer: null, //untuk ditambahkan customer baru atau customer yg di pilih di pencarian
+        //set default qty 0. size, price dan sbtotal hanya untuk keperluan di html saja. bukan di backend
+        transactions: [
+            { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
+        ]
+    },
+    transactions: [], //menampung semua data transaksi/order
+    isSuccess: false, //untuk menampilkan alert success
+    order_id: null, //untuk memberikan value order id setelah order di create. digunakan oleh alert success
+    isLoading: false,
+
 })
 
 const mutations = {
@@ -18,17 +26,28 @@ const mutations = {
     DATA_TYPE(state, payload){
         state.type = payload
     },
-    // DATA_PRODUCT(state, payload){
-    //     state.products = payload
-    // },
     SET_PAGE(state, payload){
         state.page = payload
     },
-    ASSIGN_ORDER(state, payload){
+    DATA_ORDER(state, payload){
         state.order = payload
+    },
+    CLEAR_FORM(state, payload){
+        state.order = {
+            customer: null,
+            transactions: [
+                { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
+            ]
+        }
     },
     ASSIGN_DATA_TRANSACTION(state, payload){
         state.transactions = payload
+    },
+    SET_SUCCESS(state, payload){
+        state.isSuccess = payload
+    },
+    SET_ORDER_ID(state, payload){
+        state.order_id = payload
     },
     SET_LOADING(state, payload){
         state.isLoading = payload
@@ -38,7 +57,7 @@ const mutations = {
 const actions = {
     getCustomers({commit, state}, payload){
         let search = payload.search
-        payload.loading(true)
+        payload.loading(true) //memberikan loading ke form
         return new Promise((resolve, reject) => {
             $axios.get(`/customer?page=${state.page}&q=${search}`)
             .then((res) => { //res ini berisi data yg dikirimkan oleh backend melalui response()-json()
@@ -57,25 +76,16 @@ const actions = {
             })
         })
     },
-    // getProducts({commit, state}, payload){
-    //     let search = payload.search
-    //     payload.loading(true)
-    //     return new Promise((resolve, reject) => {
-    //         $axios.get(`/product?page=${state.page}&q=${search}`)
-    //         .then((res) => {
-    //             commit('DATA_PRODUCT', res.data)
-    //             payload.loading(false)
-    //             resolve(res.data)
-    //         })
-    //     })
-    // },
     //membuat transaksi
-    createTransaction({commit}, payload){
+    createTransaction({commit, state}, payload){
         return new Promise((resolve, reject) => {
             commit('SET_LOADING', true)
-            $axios.post(`/transaction`, payload)
+            commit('SET_SUCCESS', false)
+            $axios.post(`/transaction`, state.order)
             .then((res) => {
+                commit('SET_ORDER_ID', res.data.data.id)
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', true)
                 resolve(res.data)
             })
             .catch((err) => {
@@ -86,12 +96,12 @@ const actions = {
             })
         })
     },
-    //mengambil data transaksi
+    //mengambil data 1 transaksi/order
     viewTransaction({ commit }, payload){
         return new Promise((resolve, reject) => {
             $axios.get(`/transaction/${payload}/view`)
             .then((res) => {
-                commit('ASSIGN_ORDER', res.data.data)
+                commit('DATA_ORDER', res.data.data)
                 resolve(res.data)
             })
         })
@@ -99,10 +109,18 @@ const actions = {
     //add payment
     payment({ commit }, payload){
         return new Promise((resolve, reject) => {
-            $axios.post(`/transaction/payment`, payload)
-            .then((res) => {
-                resolve(res.data)
-            })
+            commit('SET_LOADING', true)
+            setTimeout(() => {
+                $axios.post(`/transaction/payment`, payload)
+                .then((res) => {
+                    commit('SET_LOADING', false)
+                    resolve(res.data)
+                }).catch((err) => {
+                    commit('SET_LOADING', false)
+                    commit('SET_ERRORS', err.response.data.errors, {root: true})
+                })
+            }, 3000);
+            
         })
     },
     //change status in table transactions to 1(done)
@@ -114,11 +132,11 @@ const actions = {
             })
         })
     },
+    //mengambil semua data transaksi/order
     getTransactions({commit, state}, payload){
         let search = typeof payload.search != 'undefined' ? payload.search : ''
         let isPaid = typeof payload.isPaid != 'undefined' ? payload.isPaid : ''
         return new Promise((resolve, reject) => {
-            console.log(isPaid)
             $axios.get(`/transaction?page=${state.page}&q=${search}&isPaid=${isPaid}`)
             .then((res) => {
                 commit('ASSIGN_DATA_TRANSACTION', res.data)

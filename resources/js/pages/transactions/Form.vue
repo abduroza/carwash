@@ -11,8 +11,8 @@
                     </label>
                     <!-- alurnya. ketika kata kunci dimasukkan, akan memanggil fungsi onSearchCustomer(). onSearchCustomer() memanggil getCustomer() utk mendapatkan data customer sesuai kata kunci yg diketikkan. -->
                     <!-- data customer tsb dikirmkan melalui transaction.js kemudian diambil oleh mapState customers. data mapState customers diambil oleh :options="customers.data" utk ditampilkan-->
-                    <!-- oleh v-model, data yg dipilih kemudian dimasukkan ke data() orders.customer -->
-                    <v-select @search="onSearchCustomer" :options="customers.data" v-model="orders.customer" label="name" placeholder="Masukkan Kata Kunci" :filterable="false">
+                    <!-- oleh v-model, data yg dipilih kemudian dimasukkan ke data() order.customer -->
+                    <v-select @search="onSearchCustomer" :options="customers.data" v-model="order.customer" label="name" placeholder="Masukkan Kata Kunci" :filterable="false">
                         <template slot="no-options">
                             Masukkan Kata Kunci
                         </template>
@@ -24,10 +24,10 @@
                 </div>
             </div>
             <!-- menampilkan data customer yg dipilih -->
-            <div class="col-md-6" v-if="orders.customer != null && !isForm">
-                <!-- ditambahkan [], karena :items merender array. sedangkan data dari orders.customer bentuknya object -->
-                <b-table stacked small responsive="sm" :items="[orders.customer]" :fields="fieldss">
-                    <template v-slot:cell(deposite)="row" v-if="orders.customer.deposite">
+            <div class="col-md-6" v-if="order.customer != null && !isForm">
+                <!-- ditambahkan [], karena :items merender array. sedangkan data dari order.customer bentuknya object -->
+                <b-table stacked small responsive="sm" :items="[order.customer]" :fields="fieldss">
+                    <template v-slot:cell(deposite)="row" v-if="order.customer.deposite">
                         {{ row.item.deposite.amount | currency }}
                     </template>
                 </b-table>
@@ -59,7 +59,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(row, index) in orders.transactions" :key="index">
+                            <tr v-for="(row, index) in order.transactions" :key="index">
                                 <td>
                                     <!-- type -->
                                     <select v-model="row.type_id" @change="onChangeType({type_id: row.type_id, index: index})" class="form-control">
@@ -111,7 +111,7 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import _ from 'lodash'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import FormCustomer from '../customers/Form.vue'
 
 export default {
@@ -122,15 +122,14 @@ export default {
     data(){
         return {
             isForm: false,
-            isSuccess: false,
-            orders: {
-                customer: null, //untuk ditambahkan customer baru atau customer yg di pilih di pencarian
-                //set default qty 0. size, price dan sbtotal hanya untuk keperluan di html saja. bukan di backend
-                transactions: [
-                    { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
-                ]
-            },
-            order_id: null, //sebagai penyimpan id order yg baru saja sukses dibuat
+            // order: {
+            //     customer: null, //untuk ditambahkan customer baru atau customer yg di pilih di pencarian
+            //     //set default qty 0. size, price dan sbtotal hanya untuk keperluan di html saja. bukan di backend
+            //     transactions: [
+            //         { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
+            //     ]
+            // },
+            // order_id: null, //sebagai penyimpan id order yg baru saja sukses dibuat
             //menampilkan customer tabel
             fieldss: [
                 { key: 'nik', label: 'NIK', },
@@ -147,6 +146,9 @@ export default {
             customers: state => state.customers,
             type: state => state.type,
             products: state => state.products,
+            order: state => state.order,
+            isSuccess: state => state.isSuccess,
+            order_id: state => state.order_id,
             isLoading: state => state.isLoading
         }),
         ...mapState('type', {
@@ -154,14 +156,14 @@ export default {
         }),
         total(){
             //menjumlah subtotal
-            return _.sumBy(this.orders.transactions, function(o){
+            return _.sumBy(this.order.transactions, function(o){
                 return parseFloat(o.subtotal) //parseFloat untuk memastikan value yg di sum bukan string
             })
         },
         //melakukan filter transaksi yg masih kosong
         filterEmptyProduct(){
-            return _.filter(this.orders.transactions, function(item){
-                return item.subtotal == ''
+            return _.filter(this.order.transactions, function(item){
+                return item.subtotal == 0
             })
         }
     },
@@ -169,6 +171,7 @@ export default {
         ...mapActions('transaction', ['getProducts', 'getType', 'getCustomers', 'createTransaction']),
         ...mapActions('customer', ['submitCustomer']),
         ...mapActions('type', ['getTypes']),
+        ...mapMutations('transaction', ['CLEAR_FORM', 'SET_SUCCESS']),
         //method ini berjalan ketika pencarian data customer pada v-select
         onSearchCustomer(search, loading){
             //request data berdasarkan keyword yg diminta
@@ -179,48 +182,46 @@ export default {
         },
         onChangeType(e){
             //request data berdasarkan keyword yg diminta
-            this.getType({id: e.type_id, size: this.orders.transactions[e.index].size})
+            this.getType({id: e.type_id, size: this.order.transactions[e.index].size})
         },
         //ketika tombol tambah ditekan, akan menambhakn item baru
         addItem(){
             //jika filter transaksi yg masih kosong = 0 (tidak ada) alias tidak ada transaksi yg kosong
             if(this.filterEmptyProduct.length == 0){
-                this.orders.transactions.push(
+                this.order.transactions.push(
                     { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
                 )
             }
         },
         //menghapus item berdasarkan index data
         removeItem(index){
-            if(this.orders.transactions.length > 1){
-                this.orders.transactions.splice(index, 1)
+            if(this.order.transactions.length > 1){
+                this.order.transactions.splice(index, 1)
             }
         },
         //menghitung subtotal. menggenerate value transactions.price dan transactions.subtotal
         calculate(index){
             //index mengambil value index pd inputan yang sedang dimasukkan/mau dihitung. index menunjukkan value array ke-x
-            let dataa = this.orders.transactions[index]
+            let dataa = this.order.transactions[index]
             if(dataa.product != null){
                 //mengisi price untuk setiap itemnya yg didapat dari product. price ini hanya untuk ditampilkan di client, bukan utk backend. backend ngambil price dari transactions.product.price
                 dataa.price = dataa.product.price
                 dataa.subtotal = parseInt(dataa.product.price) * parseInt(dataa.quantity)
             }
         },
-        //ketika tombol create ditekan
+        //ketika tombol create transaction ditekan. tombol ini ada di Add.vue
         submit(){
-            this.isSuccess = false
             //filter price != 0. jika 0 berarti produk belum diinputkan
-            let filter = _.filter(this.orders.transactions, function(item){
+            let filter = _.filter(this.order.transactions, function(item){
                 return item.price != 0
             })
 
             //jika data transaksi tidak kosong
             if(filter.length > 0){
-                this.createTransaction(this.orders)
-                .then((res) => {
-                    this.order_id = res.data.id
-                    this.isSuccess = true
-                })
+                this.createTransaction()
+                // .then((res) => {
+                //     this.order_id = res.data.id
+                // })
             }
         },
         newCustomer(){
@@ -230,18 +231,26 @@ export default {
             this.submitCustomer()
             .then((res) => {
                 //kolom pencarian customer otomatis di set data customer baru
-                this.orders.customer = res.data //berisi data user baru complite
+                this.order.customer = res.data //berisi data user baru complite. ini ada di transaction.js state order
                 this.isForm = false
             })
         },
         resetForm(){
-            this.orders = {
-                customer: null,
-                transactions: [
-                    { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
-                ]
-            }
+            this.CLEAR_FORM()
+            this.SET_SUCCESS(false)
+            // this.order = {
+            //     customer: null,
+            //     transactions: [
+            //         { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
+            //     ]
+            // }
         }
+    },
+    //ketika halaman form ditinggalkan
+    destroyed(){
+        //form dibersihkan
+        this.CLEAR_FORM()
+        this.SET_SUCCESS(false) //set alert success jadi false
     },
     components: {
         'v-select': vSelect,

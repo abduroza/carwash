@@ -31,7 +31,12 @@
                     <input type="checkbox" v-model="customer_change" id="customer_change">
                     <label for="customer_change"> Kembalian jadi deposit?</label>
                 </div>
-                <button class="btn btn-primary btn-sm" :disabled="loading" @click="makePayment">Bayar</button>
+                <button class="btn btn-primary btn-sm" :disabled="isLoading" @click="makePayment">
+                    <i v-if="!isLoading" class="fa fa-money"> Bayar</i>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
+                </button>
             </div>
             <div class="col-md-6">
                 <!-- menampilkan data customer -->
@@ -121,6 +126,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import moment from 'moment'
 export default {
     name: 'ViewTransaction',
     created(){
@@ -131,10 +137,9 @@ export default {
             amount_via_cash: 0, //menyimpan jumlah bayar yg harus diinputkan sesuai uang dari customer
             amount_via_deposite: 0, //menyimpan jumlah bayar khusus dari deposite
             customer_change: 0, //default di set ke 0 (false). tidak dimasukkan ke deposit
-            loading: false,
+            via_deposite: false, //jika di centang maka akan bernilai true. ini adalah field type (0 => cash, 1 => deposit)
             payment_message: null,
             payment_success: false,
-            via_deposite: false, //jika di centang maka akan bernilai true. ini adalah field type (0 => cash, 1 => deposit)
 
             fieldCustomer: [
                 { key: 'name', label: 'Nama' },
@@ -149,6 +154,19 @@ export default {
                 { key: 'customer_change', label: 'Kembalian' },
                 { key: 'type', label: 'Tipe Pembayaran' }
             ]
+        }
+    },
+    computed: {
+        ...mapState('transaction', {
+            order: state => state.order,
+            isLoading: state => state.isLoading
+        }),
+        //untuk menampilkan form uang kembalian. ini hanya mereturn true atau false
+        isCustomerChange(){
+            return parseFloat(this.amount_via_cash) + parseFloat(this.amount_via_deposite) > parseFloat(this.order.amount) //me return true atau false sesuai kondisi
+        },
+        customerChangeAmount(){
+            return parseFloat(this.amount_via_cash ) + parseFloat(this.amount_via_deposite) - parseFloat(this.order.amount)
         }
     },
     watch: {
@@ -171,25 +189,13 @@ export default {
             }
         }
     },
-    computed: {
-        ...mapState('transaction', {
-            order: state => state.order
-        }),
-        //untuk menampilkan form uang kembalian. ini hanya mereturn true atau false
-        isCustomerChange(){
-            return parseFloat(this.amount_via_cash) + parseFloat(this.amount_via_deposite) > parseFloat(this.order.amount) //me return true atau false sesuai kondisi
-        },
-        customerChangeAmount(){
-            return parseFloat(this.amount_via_cash ) + parseFloat(this.amount_via_deposite) - parseFloat(this.order.amount)
-        }
-    },
     methods: {
         ...mapActions('transaction', ['viewTransaction', 'payment', 'completeItem']),
         makePayment(){
             //jika jumlah pembayran kurang dari tagihan
             if(parseFloat(this.amount_via_cash) + parseFloat(this.amount_via_deposite) < parseFloat(this.order.amount)){
                 this.payment_message = "Jumlah pembayaran kurang dari tagihan"
-                return //menghentikan proses
+                return //menghentikan proses dan keluar dari method makePayment()
             }
             this.loading = true
             this.payment({
@@ -197,14 +203,13 @@ export default {
                 amount_via_cash: this.amount_via_cash,
                 amount_via_deposite: this.amount_via_deposite,
                 customer_change: this.customer_change,
-                type: this.via_deposite //hanya cash dan deposite saja. utk cash + depsoite gak jadi
+                type: this.via_deposite
             }).then((res) => {
                 //jika pembayaran berhasil
                 if(res.status == 'success'){
                     //alert dan semua variable di reset semua
                     this.payment_success = true
                     setTimeout(() => {
-                        this.loading = false,
                         this.amount_via_cash = 0,
                         this.amount_via_deposite = 0,
                         this.customer_change = 0,
@@ -214,12 +219,10 @@ export default {
                     this.viewTransaction(this.$route.params.id)
                 } else {
                     //jika gagal, tampilkan alert gagal
-                    this.loading = false
                     alert(res.data)
                 }
             }).catch((err) => {
                 //jika gagal, tampilkan alert gagal
-                this.loading = false
                 alert(res.data)
             })
         },

@@ -2,12 +2,12 @@
     <div class="col-12">
         <div class="d-flex mb-3 mt-1">
             <div class="p-2 flex-grow-1">
-                <router-link :to="{ name: 'transaction.add' }" class="btn btn-primary btn-sm">Tambah</router-link>
+                <router-link :to="{ name: 'transaction.add' }" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Tambah transaksi">Tambah</router-link>
             </div>
             <!-- kolom filter status pembayaran -->
             <div class="p-2">
                 <select v-model="filter_isPaid" class="form-control">
-                    <option value="2">All</option>
+                    <option value="3">Semua</option>
                     <option value="1">Selesai</option>
                     <option value="0">Proses</option>
                 </select>
@@ -93,7 +93,6 @@ export default {
         return {
             fieldss: [
                 { key: 'index', label: 'No' },
-                // { key: 'id', label: 'Order Id', sortable: true },
                 { key: 'customer', label: 'Customer', sortable: true },
                 { key: 'user_id', label: 'Admin', sortable: true },
                 { key: 'service', label: 'Item Jasa'},
@@ -104,7 +103,7 @@ export default {
             ],
             transProps: { name: 'flip-list' }, //nama transisi. memanggil class css di style.css
             search: '',
-            filter_isPaid: 2 //default di set 2. ambil semua data entah itu sudah dibayar atau belum
+            filter_isPaid: 3 //default di set 3. bisa diset angka berapapun kecuali 0 dan 1. karena 0 dan 1 sudah dipakai. aambil semua data entah itu sudah dibayar atau belum
         }
     },
     computed: {

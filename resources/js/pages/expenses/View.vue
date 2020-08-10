@@ -13,7 +13,7 @@
 
                 <hr>
                 <dt>Biaya Yang Diperlukan</dt>
-                <dd>- Rp {{ expense.price }}</dd>
+                <dd>- {{ expense.price | currency }}</dd>
                 <hr>
 
                 <dt>Catatan</dt>

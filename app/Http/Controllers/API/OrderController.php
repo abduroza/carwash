@@ -69,6 +69,8 @@ class OrderController extends Controller
             $order->update([
                 'amount' => $amount
             ]);
+
+            $order->load('transaction'); //supaya response yg dikirim juga menyertakan table transactions. relationship transaction harus dibuat dulu di model Order.php
             
             DB::commit();
             return response()->json(['status' => 'success', 'data' => $order], 201);
