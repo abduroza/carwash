@@ -122,14 +122,6 @@ export default {
     data(){
         return {
             isForm: false,
-            // order: {
-            //     customer: null, //untuk ditambahkan customer baru atau customer yg di pilih di pencarian
-            //     //set default qty 0. size, price dan sbtotal hanya untuk keperluan di html saja. bukan di backend
-            //     transactions: [
-            //         { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
-            //     ]
-            // },
-            // order_id: null, //sebagai penyimpan id order yg baru saja sukses dibuat
             //menampilkan customer tabel
             fieldss: [
                 { key: 'nik', label: 'NIK', },
@@ -219,9 +211,6 @@ export default {
             //jika data transaksi tidak kosong
             if(filter.length > 0){
                 this.createTransaction()
-                // .then((res) => {
-                //     this.order_id = res.data.id
-                // })
             }
         },
         newCustomer(){
@@ -238,12 +227,6 @@ export default {
         resetForm(){
             this.CLEAR_FORM()
             this.SET_SUCCESS(false)
-            // this.order = {
-            //     customer: null,
-            //     transactions: [
-            //         { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
-            //     ]
-            // }
         }
     },
     //ketika halaman form ditinggalkan

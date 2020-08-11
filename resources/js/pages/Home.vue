@@ -1,43 +1,92 @@
 <template>
     <div class="container">
-        <section class="content-header">
-            <h1>
-                Top Navigation
-                <small>Example 2.0</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Layout</a></li>
-                <li class="active">Top Navigation</li>
-            </ol>
-        </section>
-
-        <section class="content">
-            <div class="callout callout-info">
-                <h4>Tip!</h4>
-                <p>Add the layout-top-nav class to the body tag to get this layout. This feature can also be used with a
-                    sidebar! So use this class if you want to remove the custom dropdown menus from the navbar and use regular
-                    links instead.</p>
+        <!-- header -->
+        <div class="row" style="padding: 8px 0 8px 0">
+            <div class="col-6">
+                <h4>
+                    Dashboard
+                </h4>
             </div>
-            <div class="callout callout-danger">
-                <h4>Warning!</h4>
-
-                <p>The construction of this layout differs from the normal one. In other words, the HTML markup of the navbar
-                    and the content will slightly differ than that of the normal layout.</p>
+            <div class="col-6">
+                <breadcrumb></breadcrumb>
             </div>
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Blank Box</h3>
+        </div>
+        <!-- end header -->
+        <!-- content -->
+        <div class="col-md-12 bg-white mb-3">
+            <div class="row pt-3">
+                <!-- form filter berdasarkan tahun -->
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="">Bulan</label>
+                        <select v-model="month" class="form-control">
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="box-body">
-                    The great content goes here
+                <!-- form filter berdasarkan tahun -->
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="">Tahun</label>
+                        <select v-model="year" class="form-control">
+                            <option v-for="(y, index) in years" :key="index" :value="y">{{ y }}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- tombol export -->
+                <div class="col-md-2 pt-4">
+                    <button class="btn btn-primary btn-sm pull-right" @click="exportData">Export</button>
                 </div>
             </div>
-        </section>
+            <div class="">
+                <!-- menampilkan chart dari component yg sebelumnya dibuat dengan mengirimkan data (data, labels, options) sebagai props ke LineChart.vue -->
+                <line-chart 
+                    v-if="orders.length > 0"
+                    :data="order_data" 
+                    :labels="labels"
+                    :options="chartOptions"
+                />
+            </div>
+
+        </div>
+        <!-- end content -->
     </div>
 </template>
 <script>
+import moment from 'moment'
+import _ from 'lodash'
+import LineChart from '../components/LineChart.vue'
+import Breadcrumb from '../components/Breadcrumb.vue'
+import { mapState, mapActions } from 'vuex' 
+
 export default {
+    created(){
+        this.getChartData({
+            month: this.month,
+            year: this.year
+        })
+    },
+    data(){
+        return {
+            chartOptions: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+            month: moment().format('MM'), //default bulan adalah bulan sekarang
+            year: moment().format('Y'),
+        }
+    },
     mounted(){
         //setelah login, user diarahkan ke home. jika halaman tidak direload, maka kondisinya masih seperti sebelum logout. sehingga perlu direload 1 kali.
         if (localStorage.getItem('reloaded')) {
@@ -49,6 +98,55 @@ export default {
             localStorage.setItem('reloaded', '1');
             location.reload();
         }
+    },
+    computed: {
+        ...mapState('dashboard', {
+            orders: state => state.orders
+        }),
+        //mengambil data tahun dari moment untuk ditampilkan di tag select
+        years(){
+            return _.range(2015, moment().add(1, 'years').format('Y'))
+        },
+        //data label yg diterima dari server
+        labels(){
+            //karena format datanya hanya date dan total, maka kita ambil hanya date nya saja
+            return _.map(this.orders, function(o){
+                return moment(o.date).format('DD')
+            })
+        },
+        //total amount di table order yg di get dari server
+        order_data(){
+            //mengambil hanya total amount
+            return _.map(this.orders, function(o){
+                return o.total
+            })
+        }
+    },
+    watch: {
+        //ketika value bulan di data berubah
+        month(){
+            this.getChartData({
+                month: this.month,
+                year: this.year
+            })
+        },
+        //ketika value tahun di data berubah
+        year(){
+            this.getChartData({
+                month: this.month,
+                year: this.year
+            })
+        }
+    },
+    methods: {
+        ...mapActions('dashboard', ['getChartData']),
+        exportData(){
+            window.open(`/api/export?api_token=${this.token}&month=${this.month}&year=${this.year}`)
+        }
+    },
+    components: {
+        'breadcrumb' : Breadcrumb,
+        'line-chart' : LineChart
     }
 }
 </script>
