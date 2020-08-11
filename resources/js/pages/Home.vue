@@ -8,7 +8,17 @@
                 </h4>
             </div>
             <div class="col-6">
-                <breadcrumb></breadcrumb>
+                <nav aria-label="breadcrumb" class="float-right mb-lg-2">
+                    <ol class="breadcrumb d-inline-flex my-0 px-2 py-1 bg-transparent">
+                        <li class="breadcrumb-item">
+                            <router-link :to="{ name: 'home' }" class="text-decoration-none text-dark">
+                                <i class="fa fa-home"></i>
+                                Home
+                            </router-link>
+                        </li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </nav>
             </div>
         </div>
         <!-- end header -->
@@ -46,19 +56,18 @@
                 </div>
                 <!-- tombol export -->
                 <div class="col-md-2 pt-4">
-                    <button class="btn btn-primary btn-sm pull-right" @click="exportData">Export</button>
+                    <button class="btn btn-primary btn-sm pull-right" @click="exportData" :disabled="loading" data-toggle="tooltip" data-placement="top" title="Download transaksi">
+                       <i v-if="!loading" class="fa fa-file-excel-o"> Excel</i>
+                       <div v-else-if="loading">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                        </div>
+                    </button>
                 </div>
             </div>
             <div class="">
-                <!-- menampilkan chart dari component yg sebelumnya dibuat dengan mengirimkan data (data, labels, options) sebagai props ke LineChart.vue -->
-                <line-chart 
-                    v-if="orders.length > 0"
-                    :data="order_data" 
-                    :labels="labels"
-                    :options="chartOptions"
-                />
+                <!-- menampilkan chart dari component LineChart.vue dengan mengirimkan data (data, labels, options) sebagai props ke LineChart.vue -->
+                <line-chart v-if="orders.length > 0" :data="order_data" :labels="labels" :options="chartOptions"></line-chart>
             </div>
-
         </div>
         <!-- end content -->
     </div>
@@ -68,7 +77,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import LineChart from '../components/LineChart.vue'
 import Breadcrumb from '../components/Breadcrumb.vue'
-import { mapState, mapActions } from 'vuex' 
+import { mapState, mapActions } from 'vuex'
 
 export default {
     created(){
@@ -84,7 +93,8 @@ export default {
                 maintainAspectRatio: false
             },
             month: moment().format('MM'), //default bulan adalah bulan sekarang
-            year: moment().format('Y'),
+            year: moment().format('Y'), //default tahun adalah tahun sekarang
+            loading: false
         }
     },
     mounted(){
@@ -141,7 +151,9 @@ export default {
     methods: {
         ...mapActions('dashboard', ['getChartData']),
         exportData(){
-            window.open(`/api/export?api_token=${this.token}&month=${this.month}&year=${this.year}`)
+            this.loading = true
+            window.open(`/api/export?api_token=${localStorage.getItem('token')}&month=${this.month}&year=${this.year}`)
+            this.loading = false            
         }
     },
     components: {

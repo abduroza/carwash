@@ -8,6 +8,10 @@ use App\Models\Order;
 use Carbon\Carbon;
 use DB;
 
+//export excel
+use App\Exports\OrderExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class DashboardController extends Controller
 {
     public function chart()
@@ -43,5 +47,14 @@ class DashboardController extends Controller
         }
 
         return $data;
+    }
+
+    public function exportData(Request $request)
+    {
+        $order = $this->chart(); //berisi data chart. data chart berisi date dan total amount order
+        $fileName = 'OrderCarwash' . Carbon::now()->setTimezone('Asia/Jakarta')->format('d-m-Y H:i') . '.xlsx'; //Order04-07-2020 16_12.xlsx
+
+        // return Excel::download(new OrderExport, 'Order.xlsx'); //$request->month ke Home.vue pada method exportData()
+        return Excel::download(new OrderExport($order, $request->month, $request->year), $fileName);
     }
 }

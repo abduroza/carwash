@@ -12,11 +12,10 @@ const state = () => ({
             { product: '', type_id: '', size: '', quantity: 0, price: 0, subtotal: 0 }
         ]
     },
-    transactions: [], //menampung semua data transaksi/order
+    transactions: [], //menampung list data transaksi/order
     isSuccess: false, //untuk menampilkan alert success
     order_id: null, //untuk memberikan value order id setelah order di create. digunakan oleh alert success
-    isLoading: false,
-
+    isLoading: false
 })
 
 const mutations = {
@@ -110,17 +109,14 @@ const actions = {
     payment({ commit }, payload){
         return new Promise((resolve, reject) => {
             commit('SET_LOADING', true)
-            setTimeout(() => {
-                $axios.post(`/transaction/payment`, payload)
-                .then((res) => {
-                    commit('SET_LOADING', false)
-                    resolve(res.data)
-                }).catch((err) => {
-                    commit('SET_LOADING', false)
-                    commit('SET_ERRORS', err.response.data.errors, {root: true})
-                })
-            }, 3000);
-            
+            $axios.post(`/transaction/payment`, payload)
+            .then((res) => {
+                commit('SET_LOADING', false)
+                resolve(res.data)
+            }).catch((err) => {
+                commit('SET_LOADING', false)
+                commit('SET_ERRORS', err.response.data.errors, {root: true})
+            })
         })
     },
     //change status in table transactions to 1(done)

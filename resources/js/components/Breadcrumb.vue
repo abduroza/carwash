@@ -2,7 +2,7 @@
     <nav aria-label="breadcrumb" class="float-right mb-lg-2">
         <ol class="breadcrumb d-inline-flex my-0 px-2 py-1 bg-transparent">
             <li class="breadcrumb-item">
-                <router-link :to="{ name: 'home' }">
+                <router-link :to="{ name: 'home' }" class="text-decoration-none">
                     <i class="fa fa-home"></i> 
                     Home
                 </router-link>
