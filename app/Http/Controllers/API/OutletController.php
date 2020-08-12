@@ -35,7 +35,7 @@ class OutletController extends Controller
 
         $outlet = Outlet::create($request->all());
         
-        return response()->json(['status' => 'success', 'data' => $outlet], 200); //data outlet sebenarnya tidak dikirim jg gak papa. karena gak dibutuhin FE
+        return response()->json(['status' => 'Success', 'data' => $outlet, 'message' => 'Berhasil menambahkan outlet baru'], 201); //data outlet sebenarnya tidak dikirim jg gak papa. karena gak dibutuhin FE
     }
 
     public function edit($id)
@@ -57,7 +57,7 @@ class OutletController extends Controller
         $outlet = Outlet::find($id);
         $outlet->update($request->except('code')); //kode tidak diizinkan untuk diubah
 
-        return response()->json(['status' => 'success', 'data' => $outlet], 200); //data sebenarnya tidak dikirim jg gak papa. karena gak dibutuhin FE
+        return response()->json(['status' => 'Success', 'data' => $outlet, 'message' => 'Berhasil mengupdate outlet'], 200); //data sebenarnya tidak dikirim jg gak papa. karena gak dibutuhin FE
     }
 
     public function destroy($id)
@@ -65,7 +65,7 @@ class OutletController extends Controller
         $outlet = Outlet::find($id);
         $outlet->delete();
 
-        return response()->json(['status' => 'success', 'data' => $outlet], 200);
+        return response()->json(['status' => 'Success', 'data' => $outlet, 'message' => 'Berhasil menghapus outlet'], 200);
     }
 
     //get all outlet without pagination

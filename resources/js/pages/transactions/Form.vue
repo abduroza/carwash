@@ -2,7 +2,7 @@
     <div>
         <div v-if="errors.message">
             <!-- :show="dismissCount" untuk mendefinisikan berapa detik waktu tampil. di data harus di set waktunya. misal dismissCount: 5 -->
-            <b-alert dismissible fade variant="danger" show>
+            <b-alert dismissible variant="danger" show>
                 {{ errors.message }}
             </b-alert>
         </div>

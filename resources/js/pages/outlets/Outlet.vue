@@ -76,6 +76,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['success']),
         ...mapState('outlet', {
             outlets: state => state.outlets
         }),
@@ -100,10 +101,22 @@ export default {
             this.getOutlets(this.search)
         }
     },
+    mounted(){
+        this.makeToast('success') //menangkap notif success dari add dan update
+    },
     methods: { //kenapa methods bukan actions
         //MENGAMBIL FUNGSI DARI VUEX MODULE outlet. ini sebagai ganti this.$store.dispatch
         ...mapActions('outlet', ['getOutlets', 'removeOutlet']),
-
+        makeToast(variantt = null) {
+            if(this.success != null){
+                this.$bvToast.toast(this.success.message, {
+                    title: this.success.status,
+                    variant: variantt,
+                    solid: true,
+                    autoHideDelay: 7000,
+                })
+            }
+        },
         //KETIKA TOMBOL HAPUS DICLICK, MAKA AKAN MENJALANKAN METHOD INI
         deleteOutlet(id){
         //AKAN MENAMPILKAN JENDELA KONFIRMASI
@@ -121,10 +134,15 @@ export default {
                 if(result.value){
                     //MAKA FUNGSI removeOutlet AKAN DIJALANKAN
                     // this.$store.dispatch('outlet/removeOutlet', id) //jika tidak pakai helper mapActions, pakainya ini. dispatch berarti mengakses ke action
-                    this.removeOutlet(id)
+                    this.removeOutlet(id).then(() => this.makeToast('warning')) //menangkap notif success dari removeOutlet
+                    
                 }
             })
         }
+    },
+    destroyed(){
+        //menghapus state success di store.js saat form ini ditutup
+        this.$store.commit('SET_SUCCESS', null) //mengakses mutations di root module
     }
 
 }

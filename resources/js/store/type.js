@@ -41,6 +41,7 @@ const actions = {
             .then((res) => {
                 dispatch('getTypes').then(() => resolve(res.data))
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 commit('SET_LOADING', false)

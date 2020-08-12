@@ -49,7 +49,7 @@ class ProductController extends Controller
             $product->type()->attach($request->type_id, ['id' => (string) Str::uuid(), 'size' => $request->size]);
 
             DB::commit();
-            return response()->json(['status' => 'success', 'data' => $product], 201);
+            return response()->json(['status' => 'Success', 'data' => $product, 'message' => 'Berhasil menambah product baru'], 201);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -82,7 +82,7 @@ class ProductController extends Controller
             $product->type()->updateExistingPivot($request->type_id, ['size' => $request->size]);
 
             DB::commit();
-            return response()->json(['status' => 'success', 'data' => $product], 200);
+            return response()->json(['status' => 'Success', 'data' => $product, 'message' => 'Berhasil mengupdate product'], 200);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'failed', 'message' => $err->getMessage()], 400);
@@ -95,6 +95,6 @@ class ProductController extends Controller
         //dengan cara seperti ini saja, table pivot otomatis juga terhapus
         $product->delete();
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'Success', 'message' => 'Berhasil menghapus product']);
     }
 }

@@ -65,15 +65,16 @@ const actions = {
             $axios.post(`/customer`, state.customer)
             .then((res) => {
                 dispatch('getCustomers').then(() => resolve(res.data))
+                commit('SET_SUCCESS', res.data, { root: true })
                 commit('SET_LOADING', false)
             })
             .catch((err) => {
+                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 } else if(err.response.status == 400){
                     commit('SET_ERRORS', err.response.data, { root: true })
                 }
-                commit('SET_LOADING', false)
             })
         })
     },
@@ -93,6 +94,7 @@ const actions = {
             .then((res) => {
                 commit('CLEAR_FORM')
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             })
             .catch((err) => {
@@ -105,10 +107,11 @@ const actions = {
             })
         })
     },
-    removeCustomer({ dispatch }, payload){
+    removeCustomer({ commit, dispatch }, payload){
         return new Promise((resolve, reject) => {
             $axios.delete(`/customer/${payload}`)
             .then((res) => {
+                commit('SET_SUCCESS', res.data, { root: true })
                 dispatch('getCustomers').then(() => resolve(res.data))
             })
         })

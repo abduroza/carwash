@@ -78,6 +78,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['success']),
         ...mapState('customer', {
             customers: state => state.customers
         }),
@@ -98,8 +99,21 @@ export default {
             this.getCustomers(this.search)
         }
     },
+    mounted(){
+        this.makeToast('success') //menangkap notif success dari add dan update
+    },
     methods: {
         ...mapActions('customer', ['getCustomers', 'removeCustomer']),
+        makeToast(variantt = null) {
+            if(this.success != null){
+                this.$bvToast.toast(this.success.message, {
+                    title: this.success.status,
+                    variant: variantt,
+                    solid: true,
+                    autoHideDelay: 7000,
+                })
+            }
+        },
         deleteCustomer(id){
             this.$swal({
                 title: 'Yakin Mau Dihapus?',
@@ -112,10 +126,14 @@ export default {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if(result.value){
-                    this.removeCustomer(id)
+                    this.removeCustomer(id).then(() => this.makeToast('warning'))
                 }
             })
         }
+    },
+    destroyed(){
+        //menghapus state success di store.js saat form ini ditutup
+        this.$store.commit('SET_SUCCESS', null) //mengakses mutations di root module
     }
 }
 </script>

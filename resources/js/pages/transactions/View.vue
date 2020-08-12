@@ -75,7 +75,8 @@
         </div>
         <div class="row mt-2">
             <div class="col-md-12 pt-2">
-                <div class="alert alert-success" v-if="payment_success">Pembayaran Berhasil</div>
+                <!-- alert diganti toast -->
+                <!-- <div class="alert alert-success" v-if="payment_success">Pembayaran Berhasil</div> -->
                 <hr>
                 <h4>Transaction</h4>
                 <div class="table-responsive">
@@ -125,7 +126,7 @@
     </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import moment from 'moment'
 export default {
     name: 'ViewTransaction',
@@ -139,7 +140,7 @@ export default {
             customer_change: 0, //default di set ke 0 (false). tidak dimasukkan ke deposit
             via_deposite: false, //jika di centang maka akan bernilai true. ini adalah field type (0 => cash, 1 => deposit)
             payment_message: null,
-            payment_success: false,
+            // payment_success: false,
 
             fieldCustomer: [
                 { key: 'name', label: 'Nama' },
@@ -157,6 +158,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['success']),
         ...mapState('transaction', {
             order: state => state.order,
             isLoading: state => state.isLoading
@@ -191,6 +193,17 @@ export default {
     },
     methods: {
         ...mapActions('transaction', ['viewTransaction', 'payment', 'completeItem']),
+        ...mapMutations('transaction', ['CLEAR_FORM']),
+        makeToast(variantt = null) {
+            if(this.success != null){
+                this.$bvToast.toast(this.success.message, {
+                    title: this.success.status,
+                    variant: variantt,
+                    solid: true,
+                    autoHideDelay: 10000,
+                })
+            }
+        },
         makePayment(){
             //jika jumlah pembayran kurang dari tagihan
             if(parseFloat(this.amount_via_cash) + parseFloat(this.amount_via_deposite) < parseFloat(this.order.amount)){
@@ -205,10 +218,11 @@ export default {
                 customer_change: this.customer_change,
                 type: this.via_deposite
             }).then((res) => {
+                this.makeToast('success')
                 //jika pembayaran berhasil
-                if(res.status == 'success'){
-                    //alert dan semua variable di reset semua
-                    this.payment_success = true
+                if(res.status == 'Success'){
+                    // this.payment_success = true
+                    //semua variable di reset semua
                     setTimeout(() => {
                         this.amount_via_cash = 0,
                         this.amount_via_deposite = 0,
@@ -240,12 +254,18 @@ export default {
                 if(result.value){
                     this.completeItem({ id: id })
                     .then(() => {
+                        this.makeToast('warning')
                         //perbaharui data lagi
                         this.viewTransaction(this.$route.params.id)
                     })
                 }
             })
         }
+    },
+    destroyed(){
+        //menghapus state success di store.js saat form ini ditutup
+        this.$store.commit('SET_SUCCESS', null) //mengakses mutations di root module
+        this.CLEAR_FORM() //memanggil CLEAR_FORM untuk menghapus state order di transaction.js
     }
 }
 </script>

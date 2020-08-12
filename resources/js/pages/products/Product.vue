@@ -90,6 +90,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['success']),
         ...mapState('product', { //memanggil state products di product.js untuk menampilkan list products
             products: state => state.products
         }),
@@ -113,9 +114,21 @@ export default {
             this.getProducts(this.search)
         }
     },
+    mounted(){
+        this.makeToast('success') //menangkap notif success dari add dan update
+    },
     methods: {
         ...mapActions('product', ['getProducts', 'removeProduct']),
-
+        makeToast(variantt = null) {
+            if(this.success != null){
+                this.$bvToast.toast(this.success.message, {
+                    title: this.success.status,
+                    variant: variantt,
+                    solid: true,
+                    autoHideDelay: 7000,
+                })
+            }
+        },
         //ketika tombol hapus di klik, akan menjalankan perintah berikut
         deleteProduct(id){
             //menampilkan jendela konfirmasi
@@ -132,10 +145,14 @@ export default {
                 //jika disetujui akan ada value: true. jika di CANCEL akan menghasilkan dismiss: "cancel
                 if(result.value){
                     //this.$store.dispatch('outlet/removeProduct', id) //jika tidak pakai helper mapActions, pakainya ini. dispatch berarti mengakses ke action
-                    this.removeProduct(id)
+                    this.removeProduct(id).then(() => this.makeToast('warning'))
                 }
             })
         }
+    },
+    destroyed(){
+        //menghapus state success di store.js saat form ini ditutup
+        this.$store.commit('SET_SUCCESS', null) //mengakses mutations di root module
     }
 }
 </script>

@@ -31,7 +31,6 @@
         "vue": "^2.6.11",
         "vue-chartjs": "^3.5.0",
         "vue-currency-filter": "^5.1.0",
-        "vue-flash-message": "^0.7.2",
         "vue-router": "^3.3.4",
         "vue-select": "^3.10.7",
         "vue-sweetalert2": "^3.0.6",

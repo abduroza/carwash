@@ -67,7 +67,7 @@ class ExpenseController extends Controller
             Notification::send($users, $expenseNotification);
 
             DB::commit();
-            return response()->json(['status' => 'success'], 201);
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil membuat expense baru'], 201);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -100,7 +100,7 @@ class ExpenseController extends Controller
             ]); 
             
             DB::commit();
-            return response()->json(['status' => 'success']);
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil mengupdate expense']);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -112,7 +112,7 @@ class ExpenseController extends Controller
         $expense = Expense::find($id);
         $expense->delete();
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'Success', 'message' => 'Berhasil menghapus expense']);
     }
 
     public function accept(Request $request)
@@ -130,7 +130,7 @@ class ExpenseController extends Controller
             Notification::send($expense->user, $expenseNotification); //notifikasi dikirim ke user yg meminta expense
 
             DB::commit();
-            return response()->json(['status' => 'success']);
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil mengapprove expense']);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -156,7 +156,7 @@ class ExpenseController extends Controller
             Notification::send($expense->user, $expenseNotification); //notifikasi dikirim ke user yg meminta expense
 
             DB::commit();
-            return response()->json(['status' => 'success']);
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil menolak expense']);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);

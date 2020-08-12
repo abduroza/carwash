@@ -76,8 +76,8 @@ const actions = {
             $axios.post(`/expense`, state.expense)
             .then((res) => {
                 dispatch('getExpenses').then(() => resolve(res.data))
+                commit('SET_SUCCESS', res.data, { root: true })
                 commit('SET_LOADING', false)
-                // this.flash('Data sedang loaded', 'success'); //belum jalan. ada error _this.flash is not a function
             })
             .catch((err) => {
                 if(err.response.status == 422){
@@ -104,6 +104,7 @@ const actions = {
             $axios.put(`/expense/${payload}`, state.expense)
             .then((res) => {
                 commit('CLEAR_FORM')
+                commit('SET_SUCCESS', res.data, { root: true })
                 commit('SET_LOADING', false)
                 resolve(res.data)
             })
@@ -117,10 +118,11 @@ const actions = {
             })
         })
     },
-    removeExpense({ dispatch }, payload){
+    removeExpense({ dispatch, commit }, payload){
         return new Promise((resolve, reject) => {
             $axios.delete(`/expense/${payload}`)
             .then((res) => {
+                commit('SET_SUCCESS', res.data, { root: true })
                 dispatch('getExpenses').then(() => resolve())
             })
             .catch((err) => {
@@ -132,6 +134,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             $axios.post(`/expense/accept`, payload)
             .then((res) => {
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             }).catch((err) => {
                 if(err.response.status == 422){
@@ -148,6 +151,7 @@ const actions = {
             $axios.post(`/expense/reject`, payload)
             .then((res) => {
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             }).catch((err) => {
                 if(err.response.status == 422){

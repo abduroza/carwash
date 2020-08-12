@@ -27,7 +27,7 @@ class TypeController extends Controller
             'name' => $request->name_type
         ]);
 
-        return response()->json(['status' => 'success', 'data' => $type], 201);
+        return response()->json(['status' => 'Success', 'data' => $type, 'message' => 'Berhasil menambahkan customer baru'], 201);
     }
 
     //get product kemudian get size, sehingga didapatkan data product. kelemahannya: ketika get size, datanya tidak mengandung type sebagaimana ketika get type saja tanpa get size

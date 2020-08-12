@@ -78,6 +78,7 @@ const actions = {
             .then((res) => {
                 commit('SET_LOADING', false)
                 dispatch('getProducts').then(() => resolve(res.data))
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 if(err.response.status == 422){
@@ -108,6 +109,7 @@ const actions = {
             .then((res) => {
                 commit('CLEAR_FORM')
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             })
             .catch((err) => {
@@ -128,6 +130,7 @@ const actions = {
                 //res kayaknya tidak berisi data, sehingga tidak perlu dikirm di resolve
                 //jika berhasil fecth data terbaru
                 dispatch('getProducts').then(() => resolve())
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 //kirim value error ke store.js

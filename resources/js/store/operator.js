@@ -94,6 +94,7 @@ const actions = {
             .then((res) => {
                 commit('SET_LOADING', false)
                 dispatch('getOperators').then(() => resolve(res.data))
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 if(err.response.status == 422){
@@ -138,6 +139,7 @@ const actions = {
             .then((res) => {
                 commit('CLEAR_FORM')
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             })
             .catch((err) => {
@@ -159,6 +161,7 @@ const actions = {
             .then((res) => {
                 //APABILA BERHASIL, panggil getOperator untuk FETCH DATA TERBARU DARI SERVER
                 dispatch('getOperators').then(() => resolve())
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 //kirim value error ke store.js

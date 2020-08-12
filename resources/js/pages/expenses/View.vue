@@ -45,7 +45,7 @@
                 <!-- end informasi detail expense -->
                 
                 <!-- jika status = 0, maka tombol terima dan tolak ditampilkan -->
-                <div class="pull-right" v-if="expense.status == 0 || (expense.status == 0 && !formReason)">
+                <div class="pull-right pb-3" v-if="expense.status == 0 || (expense.status == 0 && !formReason)">
                     <!-- jika yg ditekan tombol tolak, maka formReason akan ditampilkan -->
                     <button class="btn btn-danger btn-sm" @click="formReason = true" :disabled="isLoading">Tolak</button>
                     <button class="btn btn-primary btn-sm" @click="accept" :disabled="isLoading">Terima</button>

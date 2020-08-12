@@ -63,7 +63,6 @@ const actions = {
             //REQUEST DATA DENGAN ENDPOINT /OUTLETS
             $axios.get(`/outlets?page=${state.page}&q=${search}`) //code search hanya jalan di page 1 saja. biar bisa search di semua page, maka code ini page=${state.page}& dibuang. tp sayangnya, pagination jdi gak jalan.
             .then((res) => {
-                // this.flash('Data loaded', 'success'); //belum jalan
                 //SIMPAN DATA KE STATE MELALUI MUTATIONS
                 commit('ASSIGN_DATA', res.data)
                 resolve(res.data)
@@ -77,8 +76,8 @@ const actions = {
             $axios.post(`/outlets`, state.outlet)
             .then((res) => {
                 commit('SET_LOADING', false)
-                // this.flash('Data loaded', 'success'); //belum jalan
                 dispatch('getOutlets').then(() => resolve(res.data))
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((error) => {
                 commit('SET_LOADING', false)
@@ -114,6 +113,7 @@ const actions = {
                 //FORM DIBERSIHKAN
                 commit('CLEAR_FORM')
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             })
             .catch((error) => {
@@ -132,6 +132,7 @@ const actions = {
             .then((res) => {
                 //APABILA BERHASIL, panggil getOutlets() untuk FETCH DATA TERBARU DARI SERVER
                 dispatch('getOutlets').then(() => resolve())
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((error) => {
                 //kirim value error ke store.js

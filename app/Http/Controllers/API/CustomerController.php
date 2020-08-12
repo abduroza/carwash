@@ -54,7 +54,7 @@ class CustomerController extends Controller
             $customer->load('deposite'); //supaya response yg dikirim juga memyertakan table deposite. relationship harus dibuat dulu
 
             DB::commit();
-            return response()->json(['status' => 'success', 'data' => $customer], 201);
+            return response()->json(['status' => 'Success', 'data' => $customer, 'message' => 'Berhasil menambahkan customer baru'], 201);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -95,7 +95,7 @@ class CustomerController extends Controller
             $deposite->save();
 
             DB::commit();
-            return response()->json(['status' => 'success'], 200);
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil mengupdate customer'], 200);
         } catch (\Exceptiom $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -108,6 +108,6 @@ class CustomerController extends Controller
         //table depositenya otomatis terhapus
         $customer->delete();
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'Success', 'message' => 'Berhasil menghapus customer'], 200);
     }
 }

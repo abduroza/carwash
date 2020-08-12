@@ -73,7 +73,7 @@ class OrderController extends Controller
             $order->load('transaction'); //supaya response yg dikirim juga menyertakan table transactions. relationship transaction harus dibuat dulu di model Order.php
             
             DB::commit();
-            return response()->json(['status' => 'success', 'data' => $order], 201);
+            return response()->json(['status' => 'Success', 'data' => $order, 'message' => 'Berhasil mengorder'], 201);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -161,7 +161,7 @@ class OrderController extends Controller
             ]);
 
             DB::commit();
-            return response()->json(['status' => 'success', 'data' => $payment], 200);
+            return response()->json(['status' => 'Success', 'data' => $payment, 'message' => 'Pembayaran berhasil'], 200);
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -182,7 +182,7 @@ class OrderController extends Controller
             'checkout' => Carbon::now()
         ]);
 
-        return response()->json(['status' => 'success', 'data' => $transaction], 200);
+        return response()->json(['status' => 'Success', 'data' => $transaction, 'message' => 'Berhasil menyelesaikan orderan'], 200);
     }
 
     public function index()

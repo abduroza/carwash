@@ -89,6 +89,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['success']),
         ...mapState('user', {
             users: state => state.users
         }),
@@ -113,10 +114,22 @@ export default {
             this.getUsers(this.search)
         }
     },
+    mounted(){
+        this.makeToast('success') //menangkap notif success dari add dan update
+    },
     methods: {
         //MENGAMBIL FUNGSI DARI VUEX MODULE operator. ini sebagai ganti this.$store.dispatch
         ...mapActions('user', ['getUsers', 'removeUser']),
-
+        makeToast(variantt = null) {
+            if(this.success != null){
+                this.$bvToast.toast(this.success.message, {
+                    title: this.success.status,
+                    variant: variantt,
+                    solid: true,
+                    autoHideDelay: 7000,
+                })
+            }
+        },
         //KETIKA TOMBOL HAPUS DICLICK, MAKA AKAN MENJALANKAN METHOD INI
         deleteUser(id){
             //AKAN MENAMPILKAN JENDELA KONFIRMASI
@@ -134,10 +147,14 @@ export default {
                 if(result.value){
                     //MAKA FUNGSI removeOutlet AKAN DIJALANKAN
                     //this.$store.dispatch('user/removeUser', id) //jika tidak pakai helper mapActions, pakainya ini. dispatch berarti mengakses ke action
-                    this.removeUser(id)
+                    this.removeUser(id).then(() => this.makeToast('warning'))
                 }
             })
         }
+    },
+    destroyed(){
+        //menghapus state success di store.js saat form ini ditutup
+        this.$store.commit('SET_SUCCESS', null) //mengakses mutations di root module
     }
 }
 </script>

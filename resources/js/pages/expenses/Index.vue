@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <flash-message class="sticky-top bg-success"></flash-message>
         <!-- header -->
         <div class="row" style="padding: 8px 0 8px 0">
             <div class="col-6">

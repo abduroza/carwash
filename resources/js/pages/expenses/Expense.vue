@@ -81,6 +81,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['success']),
         ...mapState('expense', {
             expenses: state => state.expenses
         }),
@@ -105,8 +106,21 @@ export default {
             this.getExpenses(this.search)
         },
     },
+    mounted(){
+        this.makeToast('success') //menangkap notif success dari add dan update
+    },
     methods: {
         ...mapActions('expense', ['getExpenses', 'removeExpense']),
+        makeToast(variantt = null) {
+            if(this.success != null){
+                this.$bvToast.toast(this.success.message, {
+                    title: this.success.status,
+                    variant: variantt,
+                    solid: true,
+                    autoHideDelay: 7000,
+                })
+            }
+        },
         deleteExpense(id){
             this.$swal({
                 title: 'Yakin Mau Dihapus?',
@@ -118,14 +132,18 @@ export default {
                 confirmButtonText: 'Iya, Lanjutkan!',
                 cancelButtonText: 'Batal'
             }).then((result) => {
-                //JIKA DISETUJUI. akan ada value: true. jika di CANCEL akan menghasilkan dismiss: "cancel
+                //jk disetujui akan ada value: true. jika di CANCEL akan menghasilkan dismiss: "cancel
                 if(result.value){
                     //MAKA FUNGSI removeOutlet AKAN DIJALANKAN
                     // this.$store.dispatch('expense/removeExpense', id) //jika tidak pakai helper mapActions, pakainya ini. dispatch berarti mengakses ke action
-                    this.removeExpense(id)
+                    this.removeExpense(id).then(() => this.makeToast('warning'))
                 }
             })
         }
+    },
+    destroyed(){
+        //menghapus state succes di store.js saat form ini ditutup
+        this.$store.commit('SET_SUCCESS', null) //mengakses mutations di root module
     }
 
 }

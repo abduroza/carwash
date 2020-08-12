@@ -56,7 +56,7 @@ class UserController extends Controller
             ]);
 
             DB::commit();
-            return response()->json(['status' => 'success'], 201); //data $user tidak perlu dikirmkan karena mengandung password. biar privasi terjaga
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil menambahkan user baru'], 201); //data $user tidak perlu dikirmkan karena mengandung password. biar privasi terjaga
         } catch (\Exception $err) {
             DB::rollback();
             return response()->json(['status' => 'error', 'message' => $err->getMessage()], 400);
@@ -102,7 +102,7 @@ class UserController extends Controller
             $operator->outlet_id = $request->outlet_id;
             $operator->save();
 
-            return response()->json(['status' => 'success'], 200);
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil megupdate operator'], 200);
         } catch (\Exception $err) {
             //jika errornya disini, FE nya masih belum bisa menangkap error terjadi di bagian apa. di FE baru bisa menangani error validasi
             return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
@@ -119,7 +119,7 @@ class UserController extends Controller
         }
         $user->delete();
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'Success', 'message' => 'Berhasil menghapus user']);
     }
 
     //menampilkan user yg sedang login
@@ -149,7 +149,7 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'nullable|string|min:5',
             'photo' => 'nullable',
-            'outlet_id' => 'nullable',
+            'outlet_id' => 'nullable|exists:outlets,id',
             'role' => 'required'
         ]);
 
@@ -176,12 +176,10 @@ class UserController extends Controller
             $user->role = $request->role;
             $user->save();
 
-            return response()->json(['status' => 'success'], 200);
+            return response()->json(['status' => 'Success', 'message' => 'Berhasil mengupdate user'], 200);
         } catch (\Exception $err) {
             //jika errornya disini, FE nya masih belum bisa menangkap error terjadi di bagian apa. di FE baru bisa menangani error validasi
-            return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
         }
     }
-
-
 }

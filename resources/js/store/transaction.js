@@ -84,7 +84,7 @@ const actions = {
             .then((res) => {
                 commit('SET_ORDER_ID', res.data.data.id)
                 commit('SET_LOADING', false)
-                commit('SET_SUCCESS', true)
+                commit('SET_SUCCESS', true) //untuk menampilkan alert success
                 resolve(res.data)
             })
             .catch((err) => {
@@ -114,6 +114,7 @@ const actions = {
             $axios.post(`/transaction/payment`, payload)
             .then((res) => {
                 commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             }).catch((err) => {
                 if (err.response.status == 422){
@@ -130,6 +131,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             $axios.post(`/transaction/complete-item`, payload)
             .then((res) => {
+                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
             })
         })

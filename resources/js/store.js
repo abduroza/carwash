@@ -51,6 +51,9 @@ const store = new Vuex.Store({
         SET_TOKEN(state, payload){
             state.token = payload
         },
+        SET_SUCCESS(state, payload){
+            state.success = payload
+        },
         SET_ERRORS(state, payload){
             state.errors = payload
         },

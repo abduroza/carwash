@@ -101,6 +101,7 @@ const actions = {
             .then((res) => {
                 commit('SET_LOADING', false)
                 dispatch('getUsers').then(() => resolve(res.data))
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 if(err.response.status == 422){
@@ -146,6 +147,7 @@ const actions = {
                 commit('SET_LOADING', false)
                 commit('CLEAR_FORM')
                 resolve(res.data)
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 if(err.response.status == 422){
@@ -166,6 +168,7 @@ const actions = {
             .then((res) => {
                 //APABILA BERHASIL, panggil getUsers untuk FETCH DATA TERBARU DARI SERVER
                 dispatch('getUsers').then(() => resolve())
+                commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
                 //kirim value error ke store.js
