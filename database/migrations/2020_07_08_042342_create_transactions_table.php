@@ -15,14 +15,21 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('total_price');
+            $table->uuid('order_id');
+            $table->uuid('product_id'); //baru
+            $table->uuid('type_id'); //baru
+            $table->string('size'); //baru
+            $table->integer('quantity'); //baru
+            $table->integer('price'); //baru
+            $table->integer('subtotal'); //baru
             $table->char('status')->comment('0: process, 1: done');
             $table->datetime('checkin')->nullable();
             $table->datetime('checkout')->nullable();
-            $table->uuid('order_id');
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade'); //baru
+            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade'); //baru
         });
     }
 
@@ -35,6 +42,8 @@ class CreateTransactionsTable extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->dropForeign(['order_id']);
+            $table->dropForeign(['product_id']); //baru
+            $table->dropForeign(['type_id']); //baru
         });
         Schema::dropIfExists('transactions');
     }

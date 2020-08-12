@@ -9,6 +9,7 @@ use App\Http\Resources\ExpenseCollection;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ExpenseNotification;
+use DB;
 
 class ExpenseController extends Controller
 {
@@ -42,28 +43,35 @@ class ExpenseController extends Controller
             'note' => 'nullable|string'
         ]);
 
-        $user = $request->user(); //request user yg sedang login
+        DB::beginTransaction();
+        try {
+            $user = $request->user(); //request user yg sedang login
 
-        //jika user yg ngajuan expense adlah superadmin dan finance maka status langsung diset approve 
-        $status = $user->role == 0 || $user->role == 2 ? 1 : 0;
+            //jika user yg ngajuan expense adlah superadmin dan finance maka status langsung diset approve 
+            $status = $user->role == 0 || $user->role == 2 ? 1 : 0;
 
-        $expense = Expense::create([
-            'title' => $request->title,
-            'price' => $request->price,
-            'note' => $request->note,
-            'user_id' => $user->id,
-            'status' => $status
-        ]);
+            $expense = Expense::create([
+                'title' => $request->title,
+                'price' => $request->price,
+                'note' => $request->note,
+                'user_id' => $user->id,
+                'status' => $status
+            ]);
 
-        $expenseNotification = new ExpenseNotification($expense, $user);
+            $expenseNotification = new ExpenseNotification($expense, $user);
 
-        //mengambil user superadmin dan finance. dua jenis user inilah yg akan menerima notifikasi
-        $users = User::whereIn('role', [0, 2])->get();
+            //mengambil user superadmin dan finance. dua jenis user inilah yg akan menerima notifikasi
+            $users = User::whereIn('role', [0, 2])->get();
 
-        //mengirim notifikasinya menggunakan facade notification
-        Notification::send($users, $expenseNotification);
+            //mengirim notifikasinya menggunakan facade notification
+            Notification::send($users, $expenseNotification);
 
-        return response()->json(['status' => 'success']);
+            DB::commit();
+            return response()->json(['status' => 'success'], 201);
+        } catch (\Exception $err) {
+            DB::rollback();
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
+        }
     }
 
     public function edit($id)
@@ -81,15 +89,22 @@ class ExpenseController extends Controller
             'note' => 'nullable|string'
         ]);
 
-        $expense = Expense::with(['user'])->find($id); //juga memanggil eager loading user. karena edit ini dipakai juga oleh View.Vue untuk menampilkan nama user
-        //update dg cara mendefinisikan field2nya lebih aman. sehingga hanya field yg didefiniskan yg akan diproses. FE lebih menyukai
-        $expense->update([
-            'title' => $request->title,
-            'price' => $request->price,
-            'note' => $request->note
-        ]); 
-
-        return response()->json(['status' => 'success']);
+        DB::beginTransaction();
+        try {
+            $expense = Expense::with(['user'])->find($id); //juga memanggil eager loading user. karena edit ini dipakai juga oleh View.Vue untuk menampilkan nama user
+            //update dg cara mendefinisikan field2nya lebih aman. sehingga hanya field yg didefiniskan yg akan diproses. FE lebih menyukai
+            $expense->update([
+                'title' => $request->title,
+                'price' => $request->price,
+                'note' => $request->note
+            ]); 
+            
+            DB::commit();
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $err) {
+            DB::rollback();
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
+        }
     }
 
     public function destroy($id)
@@ -106,13 +121,20 @@ class ExpenseController extends Controller
             'id' => 'required|exists:expenses,id',
         ]);
 
-        $expense = Expense::with('user')->find($request->id);
-        $expense->update(['status' => 1]); //ubah status menjadi 1. approve
+        DB::beginTransaction();
+        try {
+            $expense = Expense::with('user')->find($request->id);
+            $expense->update(['status' => 1]); //ubah status menjadi 1. approve
 
-        $expenseNotification = new ExpenseNotification($expense, $expense->user); 
-        Notification::send($expense->user, $expenseNotification); //notifikasi dikirim ke user yg meminta expense
+            $expenseNotification = new ExpenseNotification($expense, $expense->user); 
+            Notification::send($expense->user, $expenseNotification); //notifikasi dikirim ke user yg meminta expense
 
-        return response()->json(['status' => 'success']);
+            DB::commit();
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $err) {
+            DB::rollback();
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
+        }
     }
 
     public function reject(Request $request)
@@ -122,20 +144,23 @@ class ExpenseController extends Controller
             'reason' => 'required|string'
         ]);
 
-        $expense = Expense::with('user')->find($request->id);
+        DB::beginTransaction();
+        try {
+            $expense = Expense::with('user')->find($request->id);
 
-        $expense->status = 2; //ubah status menjadi 2. reject
-        $expense->reason = $request->reason;
-        $expense->save();
+            $expense->status = 2; //ubah status menjadi 2. reject
+            $expense->reason = $request->reason;
+            $expense->save();
 
-        $expenseNotification = new ExpenseNotification($expense, $expense->user); 
-        Notification::send($expense->user, $expenseNotification); //notifikasi dikirim ke user yg meminta expense
+            $expenseNotification = new ExpenseNotification($expense, $expense->user); 
+            Notification::send($expense->user, $expenseNotification); //notifikasi dikirim ke user yg meminta expense
 
-        return response()->json(['status' => 'success']);
+            DB::commit();
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $err) {
+            DB::rollback();
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
+        }
     }
-
-
-
-    
 }
  

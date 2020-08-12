@@ -1,8 +1,14 @@
 <template>
     
     <div>
+        <div v-if="errors.message">
+            <b-alert dismissible fade variant="danger" :show="dismissCount">
+                {{ errors.message }} Check your internet connection
+            </b-alert>
+        </div>
+        <!-- <p class="text-danger" v-if="errors.message">{{ errors.message}}</p> -->
         <!-- class error untuk memberikan warna merah pada form jika ada error. error ini didapatkan dari laravel-->
-        <div class="form-group"> 
+        <div class="form-group">
             <label for="" >Permintaan</label>
             <!-- readonly bernilai true jika route name yg diakses adalah operator.edit -->
             <input type="text" class="form-control" v-model="expense.title" :class="{'is-invalid' : errors.title}">
@@ -25,6 +31,11 @@
 import { mapState, mapMutations } from 'vuex'
 export default {
     name: "FormExpense",
+    data(){
+        return {
+            dismissCount: true, //bisa diisi dengan integer. misal 5. berarti 5 detik
+        }
+    },
     computed: {
         ...mapState(['errors']),
         ...mapState('expense', {
@@ -32,7 +43,7 @@ export default {
         })
     },
     methods: {
-        ...mapMutations('expense', ['CLEAR_FORM'])
+        ...mapMutations('expense', ['CLEAR_FORM']),
     },
     destroyed(){
         this.CLEAR_FORM()

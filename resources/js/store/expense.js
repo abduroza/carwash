@@ -75,16 +75,17 @@ const actions = {
             commit('SET_LOADING', true)
             $axios.post(`/expense`, state.expense)
             .then((res) => {
-                commit('SET_LOADING', false)
                 dispatch('getExpenses').then(() => resolve(res.data))
+                commit('SET_LOADING', false)
                 // this.flash('Data sedang loaded', 'success'); //belum jalan. ada error _this.flash is not a function
             })
             .catch((err) => {
-                commit('SET_LOADING', false)
-                console.log(err)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
+                } else if(err.response.status == 400){
+                    commit('SET_ERRORS', err.response.data, { root: true })
                 }
+                commit('SET_LOADING', false)
             })
         })
     },
@@ -107,10 +108,12 @@ const actions = {
                 resolve(res.data)
             })
             .catch((err) => {
-                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
+                } else if(err.response.status == 400){
+                    commit('SET_ERRORS', err.response.data, { root: true })
                 }
+                commit('SET_LOADING', false)
             })
         })
     },
@@ -133,6 +136,8 @@ const actions = {
             }).catch((err) => {
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
+                } else if(err.response.status == 400){
+                    commit('SET_ERRORS', err.response.data, { root: true })
                 }
             })
         })
@@ -145,10 +150,12 @@ const actions = {
                 commit('SET_LOADING', false)
                 resolve(res.data)
             }).catch((err) => {
-                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
+                } else if(err.response.status == 400){
+                    commit('SET_ERRORS', err.response.data, { root: true })
                 }
+                commit('SET_LOADING', false)
             })
         })
     }

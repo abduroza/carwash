@@ -17,6 +17,7 @@ class CreateProductTypesTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('product_id');
             $table->uuid('type_id');
+            $table->string('size'); //baru
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

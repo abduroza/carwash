@@ -103,13 +103,12 @@ const actions = {
                 dispatch('getUsers').then(() => resolve(res.data))
             })
             .catch((err) => {
-                commit('SET_LOADING', false)
-                //APABILA TERJADI ERROR VALIDASI
-                //DIMANA LARAVEL MENGGUNAKAN CODE 422
                 if(err.response.status == 422){
-                    //MAKA LIST ERROR AKAN DIASSIGN KE STATE ERRORS
-                    commit('SET_ERRORS', err.response.data.errors, { root: true })
+                    commit('SET_ERRORS', err.response.data.errors, {root: true})
+                } else if(err.response.status == 400){
+                    commit('SET_ERRORS', err.response.data, { root: true })
                 }
+                commit('SET_LOADING', false)
             })
         })
     },
@@ -149,8 +148,12 @@ const actions = {
                 resolve(res.data)
             })
             .catch((err) => {
+                if(err.response.status == 422){
+                    commit('SET_ERRORS', err.response.data.errors, {root: true})
+                } else if(err.response.status == 400){
+                    commit('SET_ERRORS', err.response.data, { root: true })
+                }
                 commit('SET_LOADING', false)
-                commit('SET_ERRORS', err.response.data.errors, { root: true })
             })
         })
     },

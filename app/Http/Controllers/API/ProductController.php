@@ -52,7 +52,7 @@ class ProductController extends Controller
             return response()->json(['status' => 'success', 'data' => $product], 201);
         } catch (\Exception $err) {
             DB::rollback();
-            return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
         }
     }
 
@@ -85,7 +85,7 @@ class ProductController extends Controller
             return response()->json(['status' => 'success', 'data' => $product], 200);
         } catch (\Exception $err) {
             DB::rollback();
-            return response()->json(['status' => 'failed', 'data' => $err->getMessage()], 400);
+            return response()->json(['status' => 'failed', 'message' => $err->getMessage()], 400);
         }
     }
 

@@ -77,7 +77,7 @@ const actions = {
             $axios.post(`/outlets`, state.outlet)
             .then((res) => {
                 commit('SET_LOADING', false)
-                this.flash('Data loaded', 'success');
+                // this.flash('Data loaded', 'success'); //belum jalan
                 dispatch('getOutlets').then(() => resolve(res.data))
             })
             .catch((error) => {

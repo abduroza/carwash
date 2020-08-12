@@ -16,7 +16,6 @@ class CreateTypesTable extends Migration
         Schema::create('types', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->char('code')->comment('0: motor, 1: mobil, 2: truck');
             $table->timestamps();
         });
     }

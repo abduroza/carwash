@@ -15,16 +15,14 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('quantity');
-            $table->integer('price');
             $table->uuid('customer_id');
-            $table->uuid('product_id');
-            $table->uuid('type_id');
+            $table->integer('amount'); //baru
+            $table->boolean('isPaid')->default('0'); //baru
+            $table->uuid('user_id'); //admin/opt //baru
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -37,8 +35,6 @@ class CreateOrdersTable extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropForeign(['customer_id']);
-            $table->dropForeign(['product_id']);
-            $table->dropForeign(['type_id']);
         });
         Schema::dropIfExists('orders');
     }

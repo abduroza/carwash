@@ -15,13 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('order_id'); //baru
             $table->integer('amount');
             $table->integer('customer_change')->default(0);
             $table->char('type')->default(0)->comment('0: Cash 1: Deposite, 2: Cash and Deposite');
-            $table->uuid('transaction_id');
             $table->timestamps();
 
-            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade'); //baru            
         });
     }
 
@@ -33,7 +33,7 @@ class CreatePaymentsTable extends Migration
     public function down()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->dropForeign(['transaction_id']);
+            $table->dropForeign(['order_id']); //baru           
         });
         Schema::dropIfExists('payments');
     }

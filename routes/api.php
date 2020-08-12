@@ -60,7 +60,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::put('/customer/{id}', 'API\CustomerController@update');
     Route::delete('/customer/{id}', 'API\CustomerController@destroy');
 
-    Route::get('/transaction', 'API\OrderController@index');
+    Route::get('/transaction', 'API\OrderController@index'); //->middleware('checkRole');
     Route::post('/transaction', 'API\OrderController@store');
     Route::get('/transaction/{id}/view', 'API\OrderController@view');
     Route::post('/transaction/payment', 'API\OrderController@makePayment');
@@ -68,6 +68,4 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     Route::get('/chart', 'API\DashboardController@chart');
     Route::get('/export', 'API\DashboardController@exportData');
-    
-
 });

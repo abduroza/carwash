@@ -7,6 +7,11 @@
         </div>
         <div>
             <template>
+                <div v-if="errors.message">
+                    <b-alert dismissible fade variant="danger" show>
+                        {{ errors.message }} Check your internet connection
+                    </b-alert>
+                </div>
                 <!-- detail expense -->
                 <dt>Permintaan Karyawan</dt>
                 <dd>- {{ expense.title }}</dd>
@@ -77,6 +82,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['errors']),
         ...mapState('expense', {
             expense: state => state.expense,
             isLoading: state => state.isLoading

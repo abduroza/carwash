@@ -76,7 +76,7 @@ class OrderController extends Controller
             return response()->json(['status' => 'success', 'data' => $order], 201);
         } catch (\Exception $err) {
             DB::rollback();
-            return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
         }
     }
 
@@ -111,7 +111,7 @@ class OrderController extends Controller
             $customer_changee = 0; //set ke nol dulu, ntar diisi
 
             if($bill > $paid){
-                return response()->json(['status' => 'errors', 'data' => 'Tagihan kurang'], 400);
+                return response()->json(['status' => 'errors', 'message' => 'Tagihan kurang'], 400);
             }
 
             //jika type bernilai true, kurangi jumlah depositnya
@@ -164,7 +164,7 @@ class OrderController extends Controller
             return response()->json(['status' => 'success', 'data' => $payment], 200);
         } catch (\Exception $err) {
             DB::rollback();
-            return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
         }
     }
 

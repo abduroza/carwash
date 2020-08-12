@@ -20,7 +20,7 @@ class CreateExpensesTable extends Migration
             $table->text('note')->nullable();
             $table->uuid('user_id');
             $table->char('status')->comment('0: open, 1: approved, 2: rejected');
-            $table->string('reason')->nullable();
+            $table->text('reason')->nullable();
             $table->timestamps();
           
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

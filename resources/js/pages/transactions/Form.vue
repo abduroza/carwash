@@ -1,5 +1,11 @@
 <template>
     <div>
+        <div v-if="errors.message">
+            <!-- :show="dismissCount" untuk mendefinisikan berapa detik waktu tampil. di data harus di set waktunya. misal dismissCount: 5 -->
+            <b-alert dismissible fade variant="danger" show>
+                {{ errors.message }}
+            </b-alert>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <!-- KETIKA TOMBOL ADD NEW DITEKAN -->

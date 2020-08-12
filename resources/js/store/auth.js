@@ -11,10 +11,10 @@ const mutations = {
 
 const actions = {
     submit({ commit }, payload ) { //submit() digunakan pada component Login.vue
-        localStorage.setItem('token', null) //RESET LOCAL STORAGE MENJADI NULL
-        commit('SET_TOKEN', null, { root: true }) //RESET STATE TOKEN MENJADI NULL. KARENA MUTATIONS SET_TOKEN BERADA PADA ROOT STORES, MAKA DITAMBAHKAN PARAMETER { root: true }
+        localStorage.setItem('token', null) //tambahkan variable token dan di set null pada localstorage
+        commit('SET_TOKEN', null, { root: true }) //reset token menjadi null. karena mutation ada di module root maka tambahkan { root: true }
 
-        //KITA MENGGUNAKAN PROMISE AGAR FUNGSI SELANJUTNYA BERJALAN KETIKA FUNGSI INI SELESAI
+        //menggunakan promise agar fungsi lain berjalan setelah fungsi ini selesai
         return new Promise((resolve, reject) => {
             //MENGIRIM REQUEST KE SERVER DENGAN URI /login 
             //DAN PAYLOAD ADALAH DATA YANG DIKIRIMKAN DARI COMPONENT LOGIN.VUE

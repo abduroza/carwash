@@ -18,7 +18,7 @@ class CreateCustomersTable extends Migration
             $table->string('nik')->unique()->nullable();
             $table->string('name');
             $table->string('address');
-            $table->string('phone');
+            $table->string('phone')->unique()->nullable();
             $table->integer('point');
             $table->timestamps();
         });

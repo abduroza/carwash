@@ -59,7 +59,7 @@ class UserController extends Controller
             return response()->json(['status' => 'success'], 201); //data $user tidak perlu dikirmkan karena mengandung password. biar privasi terjaga
         } catch (\Exception $err) {
             DB::rollback();
-            return response()->json(['status' => 'error', 'data' => $err->getMessage()], 422);
+            return response()->json(['status' => 'error', 'message' => $err->getMessage()], 400);
         }
     }
 
@@ -105,7 +105,7 @@ class UserController extends Controller
             return response()->json(['status' => 'success'], 200);
         } catch (\Exception $err) {
             //jika errornya disini, FE nya masih belum bisa menangkap error terjadi di bagian apa. di FE baru bisa menangani error validasi
-            return response()->json(['status' => 'errors', 'data' => $err->getMessage()], 400);
+            return response()->json(['status' => 'errors', 'message' => $err->getMessage()], 400);
         }
     }
 
