@@ -27,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
         //to prevent erros while deploy to heroku. SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes
         Schema::defaultStringLength(191);
         //uncomment this when on a live server with https enabled. But link tag must be replace from asset() to be secured_asset() 
-        // if(config('app.env') === 'production') {
-        //     \URL::forceScheme('https');
-        // }
+        if(config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
     }
 }
