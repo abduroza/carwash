@@ -112,9 +112,9 @@
                                 <td>
                                     <!-- tombol untuk menyelesaikan orderan atau istilahnya checkout -->
                                     <!-- Tombol ini ditampilkna jika sudah dibayar (status = 1 di table orders) dan statusnya masih proses / customer belum checkout/keluar(status = 0 di table transactions) -->
-                                    <button class="btn btn-success btn-sm" v-if="order.isPaid == 1  && row.status == 0" @click="isDone(row.id)">
+                                    <button class="btn btn-success btn-sm" v-if="order.isPaid == 1  && row.status == 0" @click="isDone(row.id)" data-toggle="tooltip" data-placement="top" title="Finalisasi order">
                                         <!-- ketika diklik akan menjalankan fungsi isDone() dan mengirimkan parameter id transaksi -->
-                                        <i class="fa fa-paper-plane-o"></i>
+                                        <i class="fa fa-check"></i>
                                     </button>
                                 </td>
                             </tr>
