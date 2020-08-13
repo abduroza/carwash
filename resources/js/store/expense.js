@@ -75,9 +75,11 @@ const actions = {
             commit('SET_LOADING', true)
             $axios.post(`/expense`, state.expense)
             .then((res) => {
-                dispatch('getExpenses').then(() => resolve(res.data))
+                dispatch('getExpenses').then(() => {
+                    commit('SET_LOADING', false)
+                    resolve(res.data)
+                })
                 commit('SET_SUCCESS', res.data, { root: true })
-                commit('SET_LOADING', false)
             })
             .catch((err) => {
                 if(err.response.status == 422){

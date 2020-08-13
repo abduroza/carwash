@@ -75,18 +75,20 @@ const actions = {
             commit('SET_LOADING', true)
             $axios.post(`/outlets`, state.outlet)
             .then((res) => {
-                commit('SET_LOADING', false)
-                dispatch('getOutlets').then(() => resolve(res.data))
+                dispatch('getOutlets').then(() => {
+                    commit('SET_LOADING', false)
+                    resolve(res.data)
+                })
                 commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((error) => {
-                commit('SET_LOADING', false)
                 //APABILA TERJADI ERROR VALIDASI
                 //DIMANA LARAVEL MENGGUNAKAN CODE 422
                 if(error.response.status == 422){
                     //MAKA LIST ERROR AKAN DIASSIGN KE STATE ERRORS
                     commit('SET_ERRORS', error.response.data.errors, { root: true })
                 }
+                commit('SET_LOADING', false)
             })
         })
     },

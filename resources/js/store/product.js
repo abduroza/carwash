@@ -76,8 +76,10 @@ const actions = {
             commit('SET_LOADING', true)
             $axios.post(`/product`, state.product)
             .then((res) => {
-                commit('SET_LOADING', false)
-                dispatch('getProducts').then(() => resolve(res.data))
+                dispatch('getProducts').then(() => {
+                    commit('SET_LOADING', false)
+                    resolve(res.data)
+                })
                 commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {

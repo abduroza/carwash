@@ -39,15 +39,17 @@ const actions = {
             commit('SET_LOADING', true)
             $axios.post(`/type-product`, state.type)
             .then((res) => {
-                dispatch('getTypes').then(() => resolve(res.data))
-                commit('SET_LOADING', false)
+                dispatch('getTypes').then(() => {
+                    commit('SET_LOADING', false)
+                    resolve(res.data)
+                })
                 commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
-                commit('SET_LOADING', false)
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 }
+                commit('SET_LOADING', false)
             })
         })
     }

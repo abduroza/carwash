@@ -100,7 +100,10 @@ const actions = {
             })
             .then((res) => {
                 commit('SET_LOADING', false)
-                dispatch('getUsers').then(() => resolve(res.data))
+                dispatch('getUsers').then(() => {
+                    commit('SET_LOADING', false)
+                    resolve(res.data)
+                })
                 commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
@@ -144,10 +147,10 @@ const actions = {
                 }
             })
             .then((res) => {
-                commit('SET_LOADING', false)
                 commit('CLEAR_FORM')
-                resolve(res.data)
+                commit('SET_LOADING', false)
                 commit('SET_SUCCESS', res.data, { root: true })
+                resolve(res.data)
             })
             .catch((err) => {
                 if(err.response.status == 422){

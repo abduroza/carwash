@@ -92,8 +92,10 @@ const actions = {
                 }
             })
             .then((res) => {
-                commit('SET_LOADING', false)
-                dispatch('getOperators').then(() => resolve(res.data))
+                dispatch('getOperators').then(() => {
+                    commit('SET_LOADING', false)
+                    resolve(res.data)
+                })
                 commit('SET_SUCCESS', res.data, { root: true })
             })
             .catch((err) => {
