@@ -17,6 +17,8 @@
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
+        {{-- favicon --}}
+        <link rel="icon" type="image/png" sizes="96x96" href="{{asset('img/faviconn.png')}}">
     </head>
     <body class="bg-light">
         <div id="appku">
@@ -25,8 +27,8 @@
 
         <!-- jQuery 3.5.1 -->
         <script src="{{ asset('jquery/jquery-3.5.1.min.js') }}"></script>
-        <!-- Bootstrap  -->
-        <script src="{{ asset('bootstrap-4.5.0/dist/js/bootstrap.min.js') }}"></script>
+        <!-- Bootstrap. pakai yg bundle, supaya popper.js include disini -->
+        <script src="{{ asset('bootstrap-4.5.0/dist/js/bootstrap.bundle.min.js') }}"></script>
 
         <script src="{{ asset('js/app.js') }}"></script>
     </body>

@@ -42,7 +42,7 @@
         <div class="form-group">
             <label for="">Outlet</label>
             <select name="outlet_id" class="form-control" v-model="user.outlet_id" :class="{ 'is-invalid': errors.outlet_id }">
-                <option value="">Pilih</option>
+                <option value="">-- Pilih --</option>
                 <option v-for="(row, index) in outlets.data" :value="row.id" :key="index">{{ row.name }}</option>
             </select>
             <p class="text-danger" v-if="errors.outlet_id">{{ errors.outlet_id[0] }}</p>

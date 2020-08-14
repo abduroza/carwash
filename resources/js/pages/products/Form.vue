@@ -23,7 +23,7 @@
                         </sup>
                     </label>
                     <select class="form-control" v-model="product.type_id" :class="{ 'is-invalid': errors.type_id }">
-                        <option value="">Pilih</option>
+                        <option value="">-- Pilih --</option>
                         <option v-for="(row, index) in types" :value="row.id" :key="index">{{ row.name }}</option>
                     </select>
                     <p class="text-danger" v-if="errors.type_id">{{ errors.type_id[0] }}</p>

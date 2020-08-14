@@ -69,7 +69,7 @@
                                 <td>
                                     <!-- type -->
                                     <select v-model="row.type_id" @change="onChangeType({type_id: row.type_id, index: index})" class="form-control">
-                                        <option value="">Pilih Type</option>
+                                        <option value="">-- Pilih Type --</option>
                                         <option v-for="(data, index) in types" :value="data.id" :key="index">{{ data.name }}</option>
                                     </select>
                                 </td>
@@ -78,14 +78,14 @@
                                     <!-- size -->
                                     <!-- table size ini hanya utk bantu menampilkan product apa saja yg memiliki size tertentu. sehingga memudahkan user memilih produk berdasarkan size tertentu -->
                                     <select v-model="row.size" @change="onChangeType({type_id: row.type_id, index: index})" class="form-control">
-                                        <option value="">Pilih Size</option>
+                                        <option value="">-- Pilih Size --</option>
                                         <option v-for="(data, index) in type.product" :value="data.pivot.size" :key="index">{{ data.pivot.size }}</option>
                                     </select>
                                 </td>
                                 <td>
                                     <!-- product -->
                                     <select v-model="row.product" class="form-control">
-                                        <option value="">Pilih Product</option>
+                                        <option value="">-- Pilih Product --</option>
                                         <option v-for="(data, index) in type" :value="data" :key="index">{{ data.name }}</option>
                                     </select>
                                 </td>

@@ -56,12 +56,20 @@
                 </div>
                 <!-- tombol export -->
                 <div class="col-md-2 pt-4">
-                    <button class="btn btn-primary btn-sm pull-right" @click="exportData" :disabled="loading" data-toggle="tooltip" data-placement="top" title="Download transaksi">
-                       <i v-if="!loading" class="fa fa-file-excel-o"> Excel</i>
-                       <div v-else-if="loading">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    <div class="btn-group pull-right pt-2">
+                        <button type="button" class="btn btn-outline-primary">Download</button>
+                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <button @click="exportData" :disabled="loading" class="dropdown-item" type="button">
+                                <i class="fa fa-file-excel-o"></i> Excel
+                            </button>
+                            <button :disabled="loading" class="dropdown-item" type="button">
+                                <i class="fa fa-file-pdf-o"></i> PDF
+                            </button>
                         </div>
-                    </button>
+                    </div>
                 </div>
             </div>
             <div class="">

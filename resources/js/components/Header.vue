@@ -67,7 +67,7 @@
                                                 <img :src="'/storage/users/' + row.data.sender_photo" :width="50" :height="50" :alt="row.data.sender_name" class="rounded-circle">
                                             </i>
                                             <i v-else>
-                                                <img :src="'/storage/users/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.data.sender_name">
+                                                <img :src="'/images/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.data.sender_name">
                                             </i>
                                         </div>
                                         <div>
@@ -93,7 +93,7 @@
                             <img :src="'/storage/users/' + authenticated.photo" :width="23" :height="23" :alt="authenticated.name" class="rounded-circle">
                         </span>
                         <span v-else>
-                            <img :src="'/storage/users/' + 'avatarDefault.png'" :width="23" :height="23" :alt="authenticated.name">
+                            <img :src="'/images/' + 'avatarDefault.png'" :width="23" :height="23" :alt="authenticated.name">
                         </span>
                         <span class="hidden-xs">{{ authenticated.name }}</span>
                     </a>
@@ -105,7 +105,7 @@
                                         <img :src="'/storage/users/' + authenticated.photo" :width="80" :height="80" :alt="authenticated.name" class="rounded-circle">
                                     </i>
                                     <i v-else>
-                                        <img :src="'/storage/users/' + 'avatarDefault.png'" :width="80" :height="80" :alt="authenticated.name">
+                                        <img :src="'/images/' + 'avatarDefault.png'" :width="80" :height="80" :alt="authenticated.name">
                                     </i>
                                 </h6>
                                 <h6 class="text-center text-white">
