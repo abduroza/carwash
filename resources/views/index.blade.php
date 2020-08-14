@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Car WASH</title>
+        {{-- favicon --}}
+        <link rel="icon" type="image/png" sizes="96x96" href="{{asset('img/faviconn.png')}}">
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 4.5.0 -->
@@ -16,9 +18,6 @@
         <link rel="stylesheet" href="{{ asset('linearicon/linearicon.min.css') }}">
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
-        {{-- favicon --}}
-        <link rel="icon" type="image/png" sizes="96x96" href="{{asset('img/faviconn.png')}}">
     </head>
     <body class="bg-light">
         <div id="appku">

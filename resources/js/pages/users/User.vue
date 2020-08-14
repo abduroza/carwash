@@ -20,7 +20,7 @@
                         <img :src="'/storage/users/' + row.item.photo" :width="50" :height="50" :alt="row.item.name">
                     </div>
                     <div v-else>
-                        <img :src="'/storage/users/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.item.name">
+                        <img :src="'/images/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.item.name">
                     </div>
                 </template>
                 <template v-slot:cell(role)="row">
