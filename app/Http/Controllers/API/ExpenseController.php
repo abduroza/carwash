@@ -60,7 +60,7 @@ class ExpenseController extends Controller
 
             $expenseNotification = new ExpenseNotification($expense, $user);
 
-            //mengambil user superadmin dan finance. dua jenis user inilah yg akan menerima notifikasi
+            //mengambil semua user dg role superadmin dan finance. dua jenis user inilah yg akan menerima notifikasi
             $users = User::whereIn('role', [0, 2])->get();
 
             //mengirim notifikasinya menggunakan facade notification
@@ -123,6 +123,12 @@ class ExpenseController extends Controller
 
         DB::beginTransaction();
         try {
+            $user = request()->user();
+            //cek jika user yg mengakses accept adalah admin atau operator maka tolak
+            if(in_array($user->role, [1,3])){
+                return response()->json(['status' => 'Errors', 'message' => 'Maaf anda tidak diizinkan untuk mengaksesss!'], 403);
+            }
+
             $expense = Expense::with('user')->find($request->id);
             $expense->update(['status' => 1]); //ubah status menjadi 1. approve
 
@@ -146,6 +152,12 @@ class ExpenseController extends Controller
 
         DB::beginTransaction();
         try {
+            $user = request()->user();
+            //cek jika user yg mengakses reject adalah admin atau operator maka tolak
+            if(in_array($user->role, [1,3])){
+                return response()->json(['status' => 'Errors', 'message' => 'Maaf anda tidak diizinkan untuk mengakses!'], 403);
+            }
+
             $expense = Expense::with('user')->find($request->id);
 
             $expense->status = 2; //ubah status menjadi 2. reject

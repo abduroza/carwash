@@ -8,8 +8,8 @@
         <div>
             <template>
                 <div v-if="errors.message">
-                    <b-alert dismissible fade variant="danger" show>
-                        {{ errors.message }} Check your internet connection
+                    <b-alert variant="danger" show>
+                        {{ errors.message }}
                     </b-alert>
                 </div>
                 <!-- detail expense -->

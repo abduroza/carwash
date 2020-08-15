@@ -136,14 +136,18 @@ const actions = {
         return new Promise((resolve, reject) => {
             $axios.post(`/expense/accept`, payload)
             .then((res) => {
-                commit('SET_SUCCESS', res.data, { root: true })
                 resolve(res.data)
+                commit('SET_LOADING', false)
+                commit('SET_SUCCESS', res.data, { root: true })
             }).catch((err) => {
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 } else if(err.response.status == 400){
                     commit('SET_ERRORS', err.response.data, { root: true })
+                } else if(err.response.status == 403){
+                    commit('SET_ERRORS', err.response.data, { root: true })
                 }
+                commit('SET_LOADING', false)
             })
         })
     },
@@ -152,13 +156,15 @@ const actions = {
             commit('SET_LOADING', true)
             $axios.post(`/expense/reject`, payload)
             .then((res) => {
+                resolve(res.data)
                 commit('SET_LOADING', false)
                 commit('SET_SUCCESS', res.data, { root: true })
-                resolve(res.data)
             }).catch((err) => {
                 if(err.response.status == 422){
                     commit('SET_ERRORS', err.response.data.errors, { root: true })
                 } else if(err.response.status == 400){
+                    commit('SET_ERRORS', err.response.data, { root: true })
+                } else if(err.response.status == 403){
                     commit('SET_ERRORS', err.response.data, { root: true })
                 }
                 commit('SET_LOADING', false)

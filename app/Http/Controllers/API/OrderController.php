@@ -199,7 +199,7 @@ class OrderController extends Controller
                     ->orWhere('address', 'LIKE', '%'.$search.'%');
             });
 
-        // jika statusnya adalah 0 atau 1 maka ambil semuanya. 0 belum bayar, 1 sudah bayar
+        // jika statusnya adalah 0 atau 1 maka ambil semuanya. 0 belum bayar, 1 sudah bayar. status lain yaitu bisa 2,3,4 dll kecuali 0 dan 1
         if(in_array($isPaid, [0,1])){
             //maka ambil data berdasarkan status tersebut
             $orders = $orders->where('isPaid', $isPaid);
