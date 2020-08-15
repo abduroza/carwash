@@ -52,7 +52,7 @@ const actions = {
     getCustomers({ commit, state}, payload){
         let search = typeof payload != 'undefined' ? payload : ''
         return new Promise((resolve, reject) => {
-            $axios.get(`/customer/?page=${state.page}&q=${search}`)
+            $axios.get(`/customer?page=${state.page}&q=${search}`)
             .then((res) => {
                 commit('ASSIGN_DATA', res.data)
                 resolve(res.data)
