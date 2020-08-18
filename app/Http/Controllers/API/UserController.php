@@ -36,12 +36,11 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $photo_name = null;
-            //APABILA ADA FILE YANG DIKIRIMKAN
+            //jika ada file yg dikirimkan
             if($request->hasFile('photo')){
-                //MAKA FILE TERSEBUT AKAN DISIMPAN KE STORAGE/APP/PUBLIC/COURIERS
                 $file = $request->file('photo');
                 $photo_name = $request->email . '-' . time() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/users', $photo_name);
+                $file->move('images', $photo_name); //file akan disimpan di public/images
             }
 
             $role = request()->role != null ? $request->role : 3;
@@ -89,9 +88,9 @@ class UserController extends Controller
 
             if($request->hasFile('photo')){
                 $file = $request->file('photo'); //mengambil foto
-                $photo_name ? File::delete(storage_path('app/public/users/' . $photo_name)) : ''; //hapus foto lama jika punya
+                $photo_name ? File::delete(public_path('images/' . $photo_name)) : ''; //hapus foto lama jika punya
                 $photo_name = $request->email . '-' . time() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/users', $photo_name); //memindahkan foto ke folder public/users
+                $file->move('images', $photo_name); //memindahkan foto ke folder public/images
             }
             
             //update data di database
@@ -162,9 +161,9 @@ class UserController extends Controller
 
             if($request->hasFile('photo')){
                 $file = $request->file('photo'); //mengambil foto
-                $photo_name ? File::delete(storage_path('app/public/users/' . $photo_name)) : ''; //hapus foto lama jika punya
+                $photo_name ? File::delete(public_path('images/' . $photo_name)) : ''; //hapus foto lama jika punya
                 $photo_name = $request->email . '-' . time() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/users', $photo_name); //memindahkan foto ke folder public/users
+                $file->move('images', $photo_name); //memindahkan foto ke folder public/images
             }
             
             //update data di database

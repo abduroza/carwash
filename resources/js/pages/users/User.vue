@@ -17,10 +17,10 @@
                 <!-- :fields="fields" menampilkan label, sedangkan v-slot:cell(photo)="row" menampilkan key  -->
                 <template v-slot:cell(photo)="row">
                     <div v-if="row.item.photo">
-                        <img :src="'/storage/users/' + row.item.photo" :width="50" :height="50" :alt="row.item.name">
+                        <img :src="'/images/' + row.item.photo" :width="50" :height="50" :alt="row.item.name">
                     </div>
                     <div v-else>
-                        <img :src="'/images/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.item.name">
+                        <img :src="'/img/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.item.name">
                     </div>
                 </template>
                 <template v-slot:cell(role)="row">

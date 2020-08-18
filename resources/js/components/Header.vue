@@ -64,10 +64,10 @@
                                         <div class="pull-left">
                                             <!-- menampilkan foto pengirim -->
                                             <i v-if="row.data.sender_photo">
-                                                <img :src="'/storage/users/' + row.data.sender_photo" :width="50" :height="50" :alt="row.data.sender_name" class="rounded-circle">
+                                                <img :src="'/images/' + row.data.sender_photo" :width="50" :height="50" :alt="row.data.sender_name" class="rounded-circle">
                                             </i>
                                             <i v-else>
-                                                <img :src="'/images/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.data.sender_name">
+                                                <img :src="'/img/' + 'avatarDefault.png'" :width="50" :height="50" :alt="row.data.sender_name">
                                             </i>
                                         </div>
                                         <div>
@@ -90,10 +90,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span v-if="authenticated.photo">
-                            <img :src="'/storage/users/' + authenticated.photo" :width="23" :height="23" :alt="authenticated.name" class="rounded-circle">
+                            <img :src="'/images/' + authenticated.photo" :width="23" :height="23" :alt="authenticated.name" class="rounded-circle">
                         </span>
                         <span v-else>
-                            <img :src="'/images/' + 'avatarDefault.png'" :width="23" :height="23" :alt="authenticated.name">
+                            <img :src="'/img/' + 'avatarDefault.png'" :width="23" :height="23" :alt="authenticated.name">
                         </span>
                         <span class="hidden-xs">{{ authenticated.name }}</span>
                     </a>
@@ -102,10 +102,10 @@
                             <div class="mt-2">
                                 <h6 class="d-flex justify-content-center">
                                     <i v-if="authenticated.photo">
-                                        <img :src="'/storage/users/' + authenticated.photo" :width="80" :height="80" :alt="authenticated.name" class="rounded-circle">
+                                        <img :src="'/images/' + authenticated.photo" :width="80" :height="80" :alt="authenticated.name" class="rounded-circle">
                                     </i>
                                     <i v-else>
-                                        <img :src="'/images/' + 'avatarDefault.png'" :width="80" :height="80" :alt="authenticated.name">
+                                        <img :src="'/img/' + 'avatarDefault.png'" :width="80" :height="80" :alt="authenticated.name">
                                     </i>
                                 </h6>
                                 <h6 class="text-center text-white">
