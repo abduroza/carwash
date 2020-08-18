@@ -10,8 +10,11 @@
             <user-form></user-form>
             <!-- tombol add untuk menambahkan -->
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" @click.prevent="submit">
-                    <i class="fa fa-save"></i> Add New
+                <button class="btn btn-primary btn-sm" @click.prevent="submit" :disabled="isLoading">
+                    <span v-if="!isLoading" class="fa fa-save"> Add New</span>
+                    <div v-else-if="isLoading">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...
+                    </div>
                 </button>
             </div>
         </div>
