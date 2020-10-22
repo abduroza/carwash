@@ -30,21 +30,23 @@ class TypeController extends Controller
         return response()->json(['status' => 'Success', 'data' => $type, 'message' => 'Berhasil menambahkan customer baru'], 201);
     }
 
-    //get product kemudian get size, sehingga didapatkan data product. kelemahannya: ketika get size, datanya tidak mengandung type sebagaimana ketika get type saja tanpa get size
+    //get product berdasarkan id type dan size. sehingga didapatkan data product. kelemahannya: ketika get size, datanya tidak mengandung type sebagaimana ketika get type saja tanpa get size
     public function showTypeForTransaction(Request $request,$id)
     {
         $size = request()->size;
 
         if($size == ''){
+            //menampilkan type beserta product yg berelasi dg type yg diinputkan
             $types = Type::with(['product'])->find($id);
         } else {
+            //menampilkan daftar product yg dimiliki oleh type dg size yg diinputkan. ini yg dipakai
             $types = Type::find($id)->product()->where('size', $size)->get();
         }
 
         return response()->json(['status' => 'success', 'data' => $types]);
-        
     }
 
+    //sementara ini gak jadi dipakai. pusing
     public function showProductForTrx(Request $request, $id)
     {
         $type = Type::find($id);

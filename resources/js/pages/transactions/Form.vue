@@ -76,7 +76,7 @@
                                 
                                 <td>
                                     <!-- size -->
-                                    <!-- table size ini hanya utk bantu menampilkan product apa saja yg memiliki size tertentu. sehingga memudahkan user memilih produk berdasarkan size tertentu -->
+                                    <!-- table size ini hanya utk bantu menampilkan product apa saja yg memiliki size tertentu. sehingga memudahkan user memilih produk berdasarkan size tertentu. Aslinya pengambilan value size ada di product(dibawah ini) -->
                                     <select v-model="row.size" @change="onChangeType({type_id: row.type_id, index: index})" class="form-control">
                                         <option value="">-- Pilih Size --</option>
                                         <option v-for="(data, index) in type.product" :value="data.pivot.size" :key="index">{{ data.pivot.size }}</option>
